@@ -40,7 +40,7 @@ enum BUTTON_EVENT_TYPE {
 	BUTTON_B_DOUBLE_CLICK = 5,
     //% block=B_Hold
 	BUTTON_B_LONG_PRESS = 6,
-    //% block=A_And_B_Click
+    //% block=A_B_Click
 	BUTTON_A_AND_B_CLICK = 7,
     //% block=A_B_DblClick
 	BUTTON_A_AND_B_DOUBLE_CLICK = 8,
@@ -51,7 +51,7 @@ enum BUTTON_EVENT_TYPE {
 /**
  * Functions to operate Mozi module.
  */
-//% weight=10 color=#EE9572 icon="\uf1b3" block="Mozi"
+//% weight=10 color=#AAAAAA icon="\uf1b3" block="Mozi"
 namespace mozi {
     let wakePin: DigitalPin = DigitalPin.P8;
     
