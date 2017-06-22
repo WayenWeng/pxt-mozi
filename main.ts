@@ -51,7 +51,7 @@ enum BUTTON_EVENT_TYPE {
 /**
  * Functions to operate Mozi module.
  */
-//% weight=10 color=#AAAAAA icon="\uf1b3" block="Mozi"
+//% weight=10 color=#CD5C5C icon="\uf1b3" block="Mozi"
 namespace mozi {
     let wakePin: DigitalPin = DigitalPin.P8;
     
