@@ -274,7 +274,7 @@ namespace mozi {
      * @param event type of button to detect
      * @param handler code to run
      */
-    //% blockId=mozi_button_create_event block="on button %button event %event"
+    //% blockId=mozi_button_create_event block="on button|%button|event|%event"
     export function onButton(button: Button, event: BUTTON_EVENT_TYPE, handler: Action) {
         control.onEvent(button.eventId, event, handler);
         if (!button) {
@@ -390,7 +390,7 @@ namespace mozi {
          * @param time set the display time duration. Set it to 0 to display forever.
          */
         //% blockId=mozi_matrix_dispaly_bar block="%strip|matrix display bar|%bar|time|%time|ms"
-        displayBar(bar: number, time: number)
+        displayBar(bar: number = 0, time: number = 1000)
         {
             let data: Buffer = pins.createBuffer(4);
             data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_BAR;
@@ -406,7 +406,7 @@ namespace mozi {
          * @param time set the display time duration. Set it to 0 to display forever.
          */
         //% blockId=mozi_matrix_dispaly_emoji block="%strip|matrix display emoji|%emoji|time|%time|ms"
-        displayEmoji(emoji: EMOJI_TYPE, time: number)
+        displayEmoji(emoji: EMOJI_TYPE, time: number = 1000)
         {
             let data: Buffer = pins.createBuffer(4);
             data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_EMOJI;
@@ -422,7 +422,7 @@ namespace mozi {
          * @param time set the display time duration. Set it to 0 to display forever.
          */
         //% blockId=mozi_matrix_dispaly_number block="%strip|matrix display number|%num|time|%time|ms"
-        displayNumber(num: number, time: number)
+        displayNumber(num: number = 0, time: number = 1000)
         {
             let data: Buffer = pins.createBuffer(5);
             data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_NUM;
@@ -435,12 +435,12 @@ namespace mozi {
         
         /**
          * Display string mode on LED matrix.
-         * @param number the string pointer, the maximum number is 28 bytes.
+         * @param str the string pointer, the maximum number is 28 bytes.
          * @param time set the display time duration.
          * @param flag false - auto display off; true - always display.
          */
         //% blockId=mozi_matrix_dispaly_string block="%strip|matrix display string|%str|time|%time|ms, always|%flag"
-        displayStrings(str: string, time: number, flag: boolean = false)
+        displayStrings(str: string = "Hello", time: number = 1000, flag: boolean = false)
         {
             let len: number = str.length;
             if(len >= 28)len = 28;
