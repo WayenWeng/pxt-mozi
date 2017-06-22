@@ -435,9 +435,9 @@ namespace mozi {
         
         /**
          * Display string mode on LED matrix.
-         * @param str the string pointer, the maximum number is 28 bytes.
-         * @param time set the display time duration.
-         * @param flag false - auto display off; true - always display.
+         * @param str the string pointer, the maximum number is 28 bytes, eg: Hello
+         * @param time set the display time duration, eg: 1000
+         * @param flag false: auto display off; true: always display.
          */
         //% blockId=mozi_matrix_dispaly_string block="%strip|matrix display string|%str|time|%time|ms, always|%flag"
         displayStrings(str: string = "Hello", time: number = 1000, flag: boolean = false)
