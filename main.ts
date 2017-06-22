@@ -30,55 +30,31 @@ enum BUTTON_EVENT_TYPE {
     BUTTON_NO_EVENT = 0,
     //% block=A_Click
 	BUTTON_A_CLICK = 1,
-    //% block=A_Double_Click
+    //% block=A_DblClick
 	BUTTON_A_DOUBLE_CLICK = 2,
-    //% block=A_Long_Press
+    //% block=A_Hold
 	BUTTON_A_LONG_PRESS = 3,
     //% block=B_Click
 	BUTTON_B_CLICK = 4,
-    //% block=B_Double_Click
+    //% block=B_DblClick
 	BUTTON_B_DOUBLE_CLICK = 5,
-    //% block=B_Long_Press
+    //% block=B_Hold
 	BUTTON_B_LONG_PRESS = 6,
     //% block=A_And_B_Click
 	BUTTON_A_AND_B_CLICK = 7,
-    //% block=A_And_B_Double_Click
+    //% block=A_B_DblClick
 	BUTTON_A_AND_B_DOUBLE_CLICK = 8,
-    //% block=A_And_B_Long_Press
+    //% block=A_B_Hold
 	BUTTON_A_AND_B_LONG_PRESS = 9
 }
 
 /**
  * Functions to operate Mozi module.
  */
-//% weight=10 color=#9F79EE icon="\uf1b3" block="Mozi"
+//% weight=10 color=#EE9572 icon="\uf1b3" block="Mozi"
 namespace mozi {
-
     let wakePin: DigitalPin = DigitalPin.P8;
     
-    const buttonEventId = 7000;
-    let lastButonStatus = BUTTON_EVENT_TYPE.BUTTON_NO_EVENT;
-    let button: Button = undefined;
-    
-    /**
-     * Registers code to run when a particular button is detected
-     * @param gesture type of gesture to detect
-     * @param handler code to run
-     */
-    //% blockId=mozi_button_create_event block="onButton|%event"
-    export function onButton(event: BUTTON_EVENT_TYPE, handler: Action) {
-        control.onEvent(buttonEventId, event, handler);
-        if (!button) {
-            control.inBackground(() => {
-                const buttonStatus = button.getEventStatus();
-                if (buttonStatus != lastButonStatus) {
-                    lastButonStatus = buttonStatus;
-                    control.raiseEvent(buttonEventId, lastButonStatus);
-                }
-            })
-        }
-    }
-
     export function wakeupDevice()
     {
         pins.digitalWritePin(wakePin, 0);
@@ -116,7 +92,7 @@ namespace mozi {
         buf = pins.i2cReadBuffer(address, len, false);
         return buf;
     }
-    
+
     export class Button
     {
         currentDeviceAddress: number;
@@ -223,6 +199,30 @@ namespace mozi {
             i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_EVENT);
             data = i2cReceiveBytes(this.currentDeviceAddress, 4);
             return data[0];
+        }
+    }
+    
+    const buttonEventId = 7000;
+    let lastButonStatus = BUTTON_EVENT_TYPE.BUTTON_NO_EVENT;
+    let button: Button = undefined;
+    button.currentDeviceAddress = GROVE_TWO_DOUBLE_BUTTON.DEF_I2C_ADDR;
+    
+    /**
+     * Registers code to run when a particular button is detected
+     * @param gesture type of gesture to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_button_create_event block="onButton|%event"
+    export function onButton(event: BUTTON_EVENT_TYPE, handler: Action) {
+        control.onEvent(buttonEventId, event, handler);
+        if (!button) {
+            control.inBackground(() => {
+                const buttonStatus = button.getEventStatus();
+                if (buttonStatus != lastButonStatus) {
+                    lastButonStatus = buttonStatus;
+                    control.raiseEvent(buttonEventId, lastButonStatus);
+                }
+            })
         }
     }
 }
