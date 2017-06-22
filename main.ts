@@ -386,8 +386,8 @@ namespace mozi {
         
         /**
          * Display the LED bar mode on LED matrix.
-         * @param bar set the Bar level you want to display from 0 to 18.
-         * @param time set the display time duration. Set it to 0 to display forever.
+         * @param bar set the Bar level you want to display from 0 to 18, eg: 0
+         * @param time set the display time duration set it to 0 to display forever, eg: 1000
          */
         //% blockId=mozi_matrix_dispaly_bar block="%strip|matrix display bar|%bar|time|%time|ms"
         displayBar(bar: number = 0, time: number = 1000)
@@ -403,7 +403,7 @@ namespace mozi {
         /**
          * Display emoji mode on LED matrix.
          * @param emoji set a number from 0 to 4 for different emoji. 0 is dull, 1 is mad, 2 is sad, 3 is smile, 4 is surprise.
-         * @param time set the display time duration. Set it to 0 to display forever.
+         * @param time set the display time duration set it to 0 to display forever, eg: 1000
          */
         //% blockId=mozi_matrix_dispaly_emoji block="%strip|matrix display emoji|%emoji|time|%time|ms"
         displayEmoji(emoji: EMOJI_TYPE, time: number = 1000)
@@ -418,8 +418,8 @@ namespace mozi {
         
         /**
          * Display number mode on LED matrix.
-         * @param num set the number you want to display on LED matrix. Long numbers will roll on it, the shorter you set the time duration, the faster it rolls.
-         * @param time set the display time duration. Set it to 0 to display forever.
+         * @param num set the number you want to display on LED matrix. Long numbers will roll on it, the shorter you set the time duration, the faster it rolls, eg: 0
+         * @param time set the display time duration, set it to 0 to display forever, eg: 1000
          */
         //% blockId=mozi_matrix_dispaly_number block="%strip|matrix display number|%num|time|%time|ms"
         displayNumber(num: number = 0, time: number = 1000)
@@ -455,8 +455,8 @@ namespace mozi {
         
         /**
          * Display user-defined pictures on LED matrix.
-         * @param buf the string pointer, the maximum number is 28 bytes.
-         * @param time set the display time duration, set it to 0 to display forever.
+         * @param buf the string pointer, the maximum number is 28 bytes, eg: [0, 0, 0, 0, 0]
+         * @param time set the display time duration, set it to 0 to display forever, eg: 1000
          */
         //% blockId=mozi_matrix_dispaly_custom block="%strip|matrix display custom|%buf|time|%time|ms"
         //% advanced=true
