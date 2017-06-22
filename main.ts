@@ -128,6 +128,7 @@ namespace mozi {
          * @param newAddress the new i2c address of device, eg: 2
          */
         //% blockId=mozi_change_button_address block="%strip|change button address to|%newAddress"
+        //% newAddress.min=2 newAddress.max=126
         //% advanced=true
         changeDeviceAddress(newAddress: number = 2)
         {
