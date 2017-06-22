@@ -390,6 +390,7 @@ namespace mozi {
          * @param time set the display time duration set it to 0 to display forever, eg: 1000
          */
         //% blockId=mozi_matrix_dispaly_bar block="%strip|matrix display bar|%bar|time|%time|ms"
+        //% bar.min=0 bar.max=18
         displayBar(bar: number = 0, time: number = 1000)
         {
             let data: Buffer = pins.createBuffer(4);
@@ -440,7 +441,7 @@ namespace mozi {
          * @param flag false: auto display off; true: always display.
          */
         //% blockId=mozi_matrix_dispaly_string block="%strip|matrix display string|%str|time|%time|ms, always|%flag"
-        displayStrings(str: string = "Hello", time: number = 1000, flag: boolean = false)
+        displayStrings(str: string = "hello", time: number = 1000, flag: boolean = false)
         {
             let len: number = str.length;
             if(len >= 28)len = 28;
