@@ -1,0 +1,18 @@
+{
+    "name": "Mozi",
+    "version": "0.1.0",
+    "description": "A Microsoft MakeCode package for Seeed Studio Mozi module",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "radio": "*"
+    },
+    "files": [
+        "README.md",
+        "main.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": false
+}
