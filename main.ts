@@ -455,7 +455,7 @@ namespace mozi {
         
         /**
          * Display user-defined pictures on LED matrix.
-         * @param buf the string pointer, the maximum number is 28 bytes, eg: [0, 0, 0, 0, 0]
+         * @param buf the string pointer, the maximum number is 28 bytes, eg: 0, 0, 0, 0, 0
          * @param time set the display time duration, set it to 0 to display forever, eg: 1000
          */
         //% blockId=mozi_matrix_dispaly_custom block="%strip|matrix display custom|%buf|time|%time|ms"
