@@ -1441,4 +1441,205 @@ namespace mozi {
         matrix.currentDeviceAddress = address;
         return matrix;
     }
+    
+    
+    export class Buzzer
+    {
+        currentDeviceAddress: number;
+        
+                /**
+         * Get vendor ID of device.
+         */
+        //% blockId=mozi_get_buzzer_vid block="%strip|get buzzer vid"
+        //% advanced=true
+        getDeviceVID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get product ID of device.
+         */
+        //% blockId=mozi_get_buzzer_pid block="%strip|get buzzer pid"
+        //% advanced=true
+        getDevicePID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[2] + data[3] * 256);
+        }
+        
+        /**
+         * Change i2c address of device.
+         * @param newAddress the new i2c address of device, eg: 8
+         */
+        //% blockId=mozi_change_buzzer_address block="%strip|change buzzer address to|%newAddress"
+        //% newAddress.min=2 newAddress.max=126
+        //% advanced=true
+        changeDeviceAddress(newAddress: number = 8)
+        {
+            let data: Buffer = pins.createBuffer(2);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_SET_ADDR;
+            data[1] = newAddress;
+            i2cSendBytes(this.currentDeviceAddress, data);
+            this.currentDeviceAddress = newAddress;
+        }
+        
+        /**
+         * Restore the i2c address of device to default.
+         */
+        //% blockId=mozi_default_buzzer_address block="%strip|default buzzer address"
+        //% advanced=true
+        defaultDeviceAddress()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_RST_ADDR);
+        }
+        
+        /**
+         * Trun on the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_on_buzzer_led_flash block="%strip|turn on buzzer led flash"
+        //% advanced=true
+        turnOnLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_LED_ON);
+        }
+        
+        /**
+         * Trun off the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_off_buzzer_led_flash block="%strip|turn off buzzer led flash"
+        //% advanced=true
+        turnOffLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_LED_OFF);
+        }
+        
+        /**
+         * Enable device auto sleep mode.
+         */
+        //% blockId=mozi_enable_buzzer_auto_sleep block="%strip|enable buzzer auto sleep"
+        //% advanced=true
+        enableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
+        }
+        
+        /**
+         * Disable device auto sleep mode.
+         */
+        //% blockId=mozi_disable_buzzer_auto_sleep block="%strip|disable buzzer auto sleep"
+        //% advanced=true
+        disableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
+        }
+        
+        /**
+         * Play a tone for a given beat.
+         * @param gamut the tone needed to play.
+         * @param beat set the beat as 1, 2, 4, 8, 1/2, 1/4, 1/8 or 1/16.
+         */
+        //% blockId=mozi_buzzer_play_tone block="%strip|buzzer play tone|%gamut|in|%beat|beats"
+        playTone(gamut: GAMUT_TYPE, beat: BEAT_TYPE)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_PLAY_TONE;
+            data[1] = gamut;
+            data[2] = beat;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Play a tone for a given time duration.
+         * @param gamut the tone needed to play.
+         * @param time set the time duration, unit ms.
+         */
+        //% blockId=mozi_buzzer_ring_tone block="%strip|buzzer ring tone|%gamut|in|%time|ms"
+        ringTone(gamut: GAMUT_TYPE, time: number)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_RING_TONE;
+            data[1] = gamut;
+            data[2] = time & 0xff;
+            data[3] = (time >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Stop playing anything.
+         */
+        //% blockId=mozi_buzzer_stop_play block="%strip|buzzer stop play"
+        //% advanced=true
+        stopPlay()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_PLAY_STOP);
+        }
+        
+        /**
+         * Set tempo to a given beats per minute.
+         * @param bpm beats Per Minute, eg: 120
+         */
+        //% blockId=mozi_buzzer_set_tempo_to block="%strip|set buzzer tempo to|%bpm|bpm"
+        //% advanced=true
+        setTempoTo(bpm: number = 120)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_SET_BPM;
+            data[1] = bpm & 0xff;
+            data[2] = (bpm >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Change tempo by a given beats per minute.
+         * @param bpm increase tempo by +bpm, or decrease tempo by -bpm.
+         */
+        //% blockId=mozi_buzzer_change_tempo_by block="%strip|change buzzer tempo by|%bpm|bpm"
+        //% advanced=true
+        changeTempoBy(bpm: number)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_CHG_BPM;
+            if(bpm >= 0)data[1] = 1;
+            else 
+            {
+                data[1] = 0;
+                bpm = bpm * (-1);
+            }
+            data[2] = bpm & 0xff;
+            data[3] = (bpm >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Get the current tempo as beats per minute.
+         */
+        //% blockId=mozi_get_buzzer_tempo_to block="%strip|get buzzer tempo"
+        //% advanced=true
+        getTempoTo(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_GET_BPM);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
+        }
+    }
+    
+    /**
+     * Create a new driver for buzzer
+     * @param address the address of device, eg: 8
+     */
+    //% blockId=mozi_create_buzzer block="create buzzer and set address|%address"
+    //% address.min=2 address.max=126
+    export function createBuzzer(address: number = 8): Buzzer
+    {
+        let buzzer = new Buzzer();
+        buzzer.currentDeviceAddress = address;
+        return buzzer;
+    }
 }
