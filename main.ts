@@ -843,6 +843,203 @@ namespace mozi {
     }
     
     
+    export class Sound
+    {
+        currentDeviceAddress: number;
+        lastStatus: SOUND_EVENT_TYPE  ;
+        eventId: number;
+        
+        /**
+         * Get vendor ID of device.
+         */
+        //% blockId=mozi_get_sound_vid block="%strip|get sound vid"
+        //% advanced=true
+        getDeviceVID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get product ID of device.
+         */
+        //% blockId=mozi_get_sound_pid block="%strip|get sound pid"
+        //% advanced=true
+        getDevicePID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[2] + data[3] * 256);
+        }
+        
+        /**
+         * Change i2c address of device.
+         * @param newAddress the new i2c address of device, eg: 6
+         */
+        //% blockId=mozi_change_sound_address block="%strip|change sound address to|%newAddress"
+        //% newAddress.min=2 newAddress.max=126
+        //% advanced=true
+        changeDeviceAddress(newAddress: number = 6)
+        {
+            let data: Buffer = pins.createBuffer(2);
+            data[0] = GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_SET_ADDR;
+            data[1] = newAddress;
+            i2cSendBytes(this.currentDeviceAddress, data);
+            this.currentDeviceAddress = newAddress;
+        }
+        
+        /**
+         * Restore the i2c address of device to default.
+         */
+        //% blockId=mozi_default_sound_address block="%strip|default sound address"
+        //% advanced=true
+        defaultDeviceAddress()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_RST_ADDR);
+        }
+        
+        /**
+         * Trun on the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_on_sound_led_flash block="%strip|turn on sound led flash"
+        //% advanced=true
+        turnOnLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_LED_ON);
+        }
+        
+        /**
+         * Trun off the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_off_sound_led_flash block="%strip|turn off sound led flash"
+        //% advanced=true
+        turnOffLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_LED_OFF);
+        }
+        
+        /**
+         * Enable device auto sleep mode.
+         */
+        //% blockId=mozi_enable_sound_auto_sleep block="%strip|enable sound auto sleep"
+        //% advanced=true
+        enableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
+        }
+        
+        /**
+         * Disable device auto sleep mode.
+         */
+        //% blockId=mozi_disable_sound_auto_sleep block="%strip|disable sound auto sleep"
+        //% advanced=true
+        disableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
+        }
+        
+        /**
+         * Get the sound event status.
+         */
+        //% blockId=mozi_get_sound_event_status block="%strip|get sound event status"
+        //% advanced=true
+        getEventStatus(): SOUND_EVENT_TYPE
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_GET_DEV_EVENT);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return data[0];
+        }
+        
+        /**
+         * Get the sound sensor value.
+         */
+        //% blockId=mozi_get_sound_value block="%strip|get sound value"
+        getSoundValue(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_GET_SOUND);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Set the sound threshold level 0.
+         * @param value the value of sound threshold level 0, eg: 50
+         */
+        //% blockId=mozi_set_sound_threshold_0 block="%strip|set sound threshold 0|%value"
+        //% advanced=true
+        setThreshold0(value: number = 50)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 0;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the sound threshold level 1.
+         * @param value the value of sound threshold level 1, eg: 200
+         */
+        //% blockId=mozi_set_sound_threshold_1 block="%strip|set sound threshold 1|%value"
+        //% advanced=true
+        setThreshold1(value: number = 200)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 1;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+    }
+    
+    /**
+     * Create a new driver for sound
+     * @param address the address of device, eg: 6
+     */
+    //% blockId=mozi_create_sound block="create sound and set address|%address"
+    //% address.min=2 address.max=126
+    export function createSound(address: number = 6): Sound
+    {
+        moziEventId += 1;
+        let sound = new Sound();
+        sound.currentDeviceAddress = address;
+        sound.lastStatus = SOUND_EVENT_TYPE.LESS_THAN_THD_0;
+        sound.eventId = moziEventId;
+        return sound;
+    }
+    
+    /**
+     * Registers code to run when a particular sound is detected
+     * @param sound device be specified
+     * @param event type of sound to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_imu_create_event block="on sound|%sound|event|%event"
+    export function onSound(sound: Sound, event: SOUND_EVENT_TYPE, handler: Action) {
+        control.onEvent(sound.eventId, event, handler);
+        if (!sound) {
+            control.inBackground(() => {
+                while(true)
+                {
+                    const soundStatus = sound.getEventStatus();
+                    if (soundStatus != sound.lastStatus) {
+                        sound.lastStatus = soundStatus;
+                        control.raiseEvent(sound.eventId, sound.lastStatus);
+                    }
+                    basic.pause(50);
+                }
+            })
+        }
+    }
+
+    
     export class Matrix
     {
         currentDeviceAddress: number;
