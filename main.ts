@@ -498,99 +498,7 @@ namespace mozi {
         currentDeviceAddress: number;
         lastStatus: BUTTON_EVENT_TYPE;
         eventId: number;
-        
-        /**
-         * Get vendor ID of device.
-         */
-        //% blockId=mozi_get_button_vid block="%strip|get button vid"
-        //% advanced=true
-        getDeviceVID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get product ID of device.
-         */
-        //% blockId=mozi_get_button_pid block="%strip|get buton pid"
-        //% advanced=true
-        getDevicePID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[2] + data[3] * 256);
-        }
-        
-        /**
-         * Change i2c address of device.
-         * @param newAddress the new i2c address of device, eg: 2
-         */
-        //% blockId=mozi_change_button_address block="%strip|change button address to|%newAddress"
-        //% newAddress.min=2 newAddress.max=126
-        //% advanced=true
-        changeDeviceAddress(newAddress: number = 2)
-        {
-            let data: Buffer = pins.createBuffer(2);
-            data[0] = GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_SET_ADDR;
-            data[1] = newAddress;
-            i2cSendBytes(this.currentDeviceAddress, data);
-            this.currentDeviceAddress = newAddress;
-        }
-        
-        /**
-         * Restore the i2c address of device to default.
-         */
-        //% blockId=mozi_default_button_address block="%strip|default button address"
-        //% advanced=true
-        defaultDeviceAddress()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_RST_ADDR);
-        }
-        
-        /**
-         * Trun on the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_on_button_led_flash block="%strip|turn on button led flash"
-        //% advanced=true
-        turnOnLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_LED_ON);
-        }
-        
-        /**
-         * Trun off the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_off_button_led_flash block="%strip|turn off button led flash"
-        //% advanced=true
-        turnOffLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_LED_OFF);
-        }
-        
-        /**
-         * Enable device auto sleep mode.
-         */
-        //% blockId=mozi_enable_button_auto_sleep block="%strip|enable button auto sleep"
-        //% parts="Grove_Two_Double_Button" advanced=true
-        enableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
-        }
-        
-        /**
-         * Disable device auto sleep mode.
-         */
-        //% blockId=mozi_disable_button_auto_sleep block="%strip|disable button auto sleep"
-        //% advanced=true
-        disableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
-        }
-        
+
         /**
          * Get the button event status.
          */
@@ -659,98 +567,6 @@ namespace mozi {
         }
         
         /**
-         * Get vendor ID of device.
-         */
-        //% blockId=mozi_get_imu_vid block="%strip|get imu vid"
-        //% advanced=true
-        getDeviceVID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get product ID of device.
-         */
-        //% blockId=mozi_get_imu_pid block="%strip|get imu pid"
-        //% advanced=true
-        getDevicePID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[2] + data[3] * 256);
-        }
-        
-        /**
-         * Change i2c address of device.
-         * @param newAddress the new i2c address of device, eg: 4
-         */
-        //% blockId=mozi_change_imu_address block="%strip|change imu address to|%newAddress"
-        //% newAddress.min=2 newAddress.max=126
-        //% advanced=true
-        changeDeviceAddress(newAddress: number = 4)
-        {
-            let data: Buffer = pins.createBuffer(2);
-            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_ADDR;
-            data[1] = newAddress;
-            i2cSendBytes(this.currentDeviceAddress, data);
-            this.currentDeviceAddress = newAddress;
-        }
-        
-        /**
-         * Restore the i2c address of device to default.
-         */
-        //% blockId=mozi_default_imu_address block="%strip|default imu address"
-        //% advanced=true
-        defaultDeviceAddress()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_RST_ADDR);
-        }
-        
-        /**
-         * Trun on the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_on_imu_led_flash block="%strip|turn on imu led flash"
-        //% advanced=true
-        turnOnLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_LED_ON);
-        }
-        
-        /**
-         * Trun off the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_off_imu_led_flash block="%strip|turn off imu led flash"
-        //% advanced=true
-        turnOffLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_LED_OFF);
-        }
-        
-        /**
-         * Enable device auto sleep mode.
-         */
-        //% blockId=mozi_enable_imu_auto_sleep block="%strip|enable imu auto sleep"
-        //% advanced=true
-        enableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
-        }
-        
-        /**
-         * Disable device auto sleep mode.
-         */
-        //% blockId=mozi_disable_imu_auto_sleep block="%strip|disable imu auto sleep"
-        //% advanced=true
-        disableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
-        }
-        
-        /**
          * Get the imu event status.
          */
         //% blockId=mozi_get_imu_event_status block="%strip|get imu event status"
@@ -762,7 +578,6 @@ namespace mozi {
             data = i2cReceiveBytes(this.currentDeviceAddress, 4);
             return data[0];
         }
-        
         
         /**
          * Get the accelerometer value on X-axis.
@@ -799,84 +614,6 @@ namespace mozi {
             data = i2cReceiveBytes(this.currentDeviceAddress, 2);
             return this.numberFormat(data[0] + data[1] * 256);
         }
-
-        /**
-         * Get the gyroscope value on X-axis.
-         */
-        //% blockId=mozi_get_imu_gyro_axis_x block="%strip|get gyro axis x"
-        //% advanced=true
-        getGyroAxisX(): number
-        {
-            let data: Buffer = pins.createBuffer(2);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_X);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
-            return this.numberFormat(data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get the gyroscope value on Y-axis.
-         */
-        //% blockId=mozi_get_imu_gyro_axis_y block="%strip|get gyro axis y"
-        //% advanced=true
-        getGyroAxisY(): number
-        {
-            let data: Buffer = pins.createBuffer(2);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_Y);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
-            return this.numberFormat(data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get the gyroscope value on Z-axis.
-         */
-        //% blockId=mozi_get_imu_gyro_axis_z block="%strip|get gyro axis z"
-        //% advanced=true
-        getGyroAxisZ(): number
-        {
-            let data: Buffer = pins.createBuffer(2);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_Z);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
-            return this.numberFormat(data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get the magnetometer value on X-axis.
-         */
-        //% blockId=mozi_get_imu_magnet_axis_x block="%strip|get magnet axis x"
-        //% advanced=true
-        getMagnetAxisX(): number
-        {
-            let data: Buffer = pins.createBuffer(2);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_X);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
-            return this.numberFormat(data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get the magnetometer value on Y-axis.
-         */
-        //% blockId=mozi_get_imu_magnet_axis_y block="%strip|get magnet axis y"
-        //% advanced=true
-        getMagnetAxisY(): number
-        {
-            let data: Buffer = pins.createBuffer(2);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_Y);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
-            return this.numberFormat(data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get the magnetometer value on Z-axis.
-         */
-        //% blockId=mozi_get_imu_magnet_axis_z block="%strip|get magnet axis z"
-        //% advanced=true
-        getMagnetAxisZ(): number
-        {
-            let data: Buffer = pins.createBuffer(2);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_Z);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
-            return this.numberFormat(data[0] + data[1] * 256);
-        }
         
         /**
          * Get the accelerometer values on X, Y and Z axis.
@@ -893,120 +630,6 @@ namespace mozi {
             accel[1] = this.numberFormat(data[2] + (data[3] * 256));
             accel[2] = this.numberFormat(data[4] + (data[5] * 256));
             return accel;
-        }
-        
-        /**
-         * Get the gyroscope values on X, Y and Z axis.
-         */
-        //% blockId=mozi_get_imu_gyro_3_axis_data block="%strip|get gyro 3 axis"
-        //% advanced=true
-        getGyro3AxisData(): number[]
-        {
-            let data: Buffer = pins.createBuffer(6);
-            let gyro: number[] = [0,0,0];
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_X_Y_Z);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 6);
-            gyro[0] = this.numberFormat(data[0] + data[1] * 256);
-            gyro[1] = this.numberFormat(data[2] + data[3] * 256);
-            gyro[2] = this.numberFormat(data[4] + data[5] * 256);
-            return gyro;
-        }
-        
-        /**
-         * Get the magnetometer values on X, Y and Z axis.
-         */
-        //% blockId=mozi_get_imu_magnet_3_axis_data block="%strip|get magnet 3 axis"
-        //% advanced=true
-        getMagnet3AxisData(): number[]
-        {
-            let data: Buffer = pins.createBuffer(6);
-            let magnet: number[] = [0,0,0];
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_X_Y_Z);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 6);
-            magnet[0] = this.numberFormat(data[0] + data[1] * 256);
-            magnet[1] = this.numberFormat(data[2] + data[3] * 256);
-            magnet[2] = this.numberFormat(data[4] + data[5] * 256);
-            return magnet;
-        }
-        
-        /**
-         * Get the values of accelerometer, gyroscope and magnetometer on X, Y and Z axis.
-         */
-        //% blockId=mozi_get_imu_9_axis_data block="%strip|get imu 9 axis"
-        //% advanced=true
-        get9AxisData(): number[]
-        {
-            let data: Buffer = pins.createBuffer(18);
-            let imu: number[] = [0,0,0,0,0,0,0,0,0];
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ALL_X_Y_Z);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 18);
-            for(let i = 0; i < 3; i ++)
-            {
-                imu[i] = this.numberFormat(data[i * 2] + data[i * 2 + 1] * 256);
-                imu[i + 3] = this.numberFormat(data[i * 2 + 6] + data[i * 2 + 1 + 6] * 256);
-                imu[i + 6] = this.numberFormat(data[i * 2 + 12] + data[i * 2 + 1 + 12] * 256);
-            }
-            return imu;
-        }
-        
-        /**
-         * Set the range of accelerometer.
-         * @param range the range of accelerometer.
-         */
-        //% blockId=mozi_set_imu_accel_range block="%strip|set accel range|%range"
-        //% advanced=true
-        setAccelRange(range: IMU_ACCEL_FSR_TYPE)
-        {
-            let data: Buffer = pins.createBuffer(3);
-            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RANGE;
-            data[1] = 0;
-            data[2] = range;
-            i2cSendBytes(this.currentDeviceAddress, data);
-        }
-        
-        /**
-         * Set the rate of accelerometer.
-         * @param rate the rate of accelerometer.
-         */
-        //% blockId=mozi_set_imu_accel_rate block="%strip|set accel rate|%rate"
-        //% advanced=true
-        setAccelRate(rate: IMU_ACCEL_DLPF_TYPE)
-        {
-            let data: Buffer = pins.createBuffer(3);
-            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RATE;
-            data[1] = 0;
-            data[2] = rate;
-            i2cSendBytes(this.currentDeviceAddress, data);
-        }
-        
-        /**
-         * Set the range of gyroscope.
-         * @param range the range of gyroscope.
-         */
-        //% blockId=mozi_set_imu_gyro_range block="%strip|set gyro range|%range"
-        //% advanced=true
-        setGyroRange(range: IMU_GYRO_FSR_TYPE)
-        {
-            let data: Buffer = pins.createBuffer(3);
-            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RANGE;
-            data[1] = 1;
-            data[2] = range;
-            i2cSendBytes(this.currentDeviceAddress, data);
-        }
-        
-        /**
-         * Set the rate of gyroscope.
-         * @param rate the rate of gyroscope.
-         */
-        //% blockId=mozi_set_imu_gyro_rate block="%strip|set gyro rate|%rate"
-        //% advanced=true
-        setGyroRate(rate: IMU_GYRO_DLPF_TYPE)
-        {
-            let data: Buffer = pins.createBuffer(3);
-            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RATE;
-            data[1] = 1;
-            data[2] = rate;
-            i2cSendBytes(this.currentDeviceAddress, data);
         }
     }
     
@@ -1049,105 +672,13 @@ namespace mozi {
             })
         }
     }
-    
+
     
     export class Light
     {
         currentDeviceAddress: number;
         lastStatus: LIGHT_EVENT_TYPE ;
         eventId: number;
-        
-        /**
-         * Get vendor ID of device.
-         */
-        //% blockId=mozi_get_light_vid block="%strip|get light vid"
-        //% advanced=true
-        getDeviceVID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get product ID of device.
-         */
-        //% blockId=mozi_get_light_pid block="%strip|get light pid"
-        //% advanced=true
-        getDevicePID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[2] + data[3] * 256);
-        }
-        
-        /**
-         * Change i2c address of device.
-         * @param newAddress the new i2c address of device, eg: 5
-         */
-        //% blockId=mozi_change_light_address block="%strip|change light address to|%newAddress"
-        //% newAddress.min=2 newAddress.max=126
-        //% advanced=true
-        changeDeviceAddress(newAddress: number = 5)
-        {
-            let data: Buffer = pins.createBuffer(2);
-            data[0] = GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_SET_ADDR;
-            data[1] = newAddress;
-            i2cSendBytes(this.currentDeviceAddress, data);
-            this.currentDeviceAddress = newAddress;
-        }
-        
-        /**
-         * Restore the i2c address of device to default.
-         */
-        //% blockId=mozi_default_light_address block="%strip|default light address"
-        //% advanced=true
-        defaultDeviceAddress()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_RST_ADDR);
-        }
-        
-        /**
-         * Trun on the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_on_light_led_flash block="%strip|turn on light led flash"
-        //% advanced=true
-        turnOnLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_LED_ON);
-        }
-        
-        /**
-         * Trun off the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_off_light_led_flash block="%strip|turn off light led flash"
-        //% advanced=true
-        turnOffLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_LED_OFF);
-        }
-        
-        /**
-         * Enable device auto sleep mode.
-         */
-        //% blockId=mozi_enable_light_auto_sleep block="%strip|enable light auto sleep"
-        //% advanced=true
-        enableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
-        }
-        
-        /**
-         * Disable device auto sleep mode.
-         */
-        //% blockId=mozi_disable_light_auto_sleep block="%strip|disable light auto sleep"
-        //% advanced=true
-        disableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
-        }
         
         /**
          * Get the light event status.
@@ -1246,106 +777,14 @@ namespace mozi {
             })
         }
     }
-    
+
     
     export class Sound
     {
         currentDeviceAddress: number;
         lastStatus: SOUND_EVENT_TYPE  ;
         eventId: number;
-        
-        /**
-         * Get vendor ID of device.
-         */
-        //% blockId=mozi_get_sound_vid block="%strip|get sound vid"
-        //% advanced=true
-        getDeviceVID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get product ID of device.
-         */
-        //% blockId=mozi_get_sound_pid block="%strip|get sound pid"
-        //% advanced=true
-        getDevicePID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[2] + data[3] * 256);
-        }
-        
-        /**
-         * Change i2c address of device.
-         * @param newAddress the new i2c address of device, eg: 6
-         */
-        //% blockId=mozi_change_sound_address block="%strip|change sound address to|%newAddress"
-        //% newAddress.min=2 newAddress.max=126
-        //% advanced=true
-        changeDeviceAddress(newAddress: number = 6)
-        {
-            let data: Buffer = pins.createBuffer(2);
-            data[0] = GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_SET_ADDR;
-            data[1] = newAddress;
-            i2cSendBytes(this.currentDeviceAddress, data);
-            this.currentDeviceAddress = newAddress;
-        }
-        
-        /**
-         * Restore the i2c address of device to default.
-         */
-        //% blockId=mozi_default_sound_address block="%strip|default sound address"
-        //% advanced=true
-        defaultDeviceAddress()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_RST_ADDR);
-        }
-        
-        /**
-         * Trun on the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_on_sound_led_flash block="%strip|turn on sound led flash"
-        //% advanced=true
-        turnOnLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_LED_ON);
-        }
-        
-        /**
-         * Trun off the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_off_sound_led_flash block="%strip|turn off sound led flash"
-        //% advanced=true
-        turnOffLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_LED_OFF);
-        }
-        
-        /**
-         * Enable device auto sleep mode.
-         */
-        //% blockId=mozi_enable_sound_auto_sleep block="%strip|enable sound auto sleep"
-        //% advanced=true
-        enableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
-        }
-        
-        /**
-         * Disable device auto sleep mode.
-         */
-        //% blockId=mozi_disable_sound_auto_sleep block="%strip|disable sound auto sleep"
-        //% advanced=true
-        disableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
-        }
-        
+
         /**
          * Get the sound event status.
          */
@@ -1450,98 +889,7 @@ namespace mozi {
         currentDeviceAddress: number;
         lastStatus: TEMP_EVENT_TYPE;
         eventId: number;
-        
-        /**
-         * Get vendor ID of device.
-         */
-        //% blockId=mozi_get_temperature_vid block="%strip|get temperature vid"
-        //% advanced=true
-        getDeviceVID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get product ID of device.
-         */
-        //% blockId=mozi_get_temperature_pid block="%strip|get temperature pid"
-        //% advanced=true
-        getDevicePID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[2] + data[3] * 256);
-        }
-        
-        /**
-         * Change i2c address of device.
-         * @param newAddress the new i2c address of device, eg: 3
-         */
-        //% blockId=mozi_change_temperature_address block="%strip|change temperature address to|%newAddress"
-        //% advanced=true
-        changeDeviceAddress(newAddress: number = 3)
-        {
-            let data: Buffer = pins.createBuffer(2);
-            data[0] = GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_SET_ADDR;
-            data[1] = newAddress;
-            i2cSendBytes(this.currentDeviceAddress, data);
-            this.currentDeviceAddress = newAddress;
-        }
-        
-        /**
-         * Restore the i2c address of device to default.
-         */
-        //% blockId=mozi_default_temperature_address block="%strip|default temperature address"
-        //% advanced=true
-        defaultDeviceAddress()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_RST_ADDR);
-        }
-        
-        /**
-         * Trun on the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_on_temperature_led_flash block="%strip|turn on temperature led flash"
-        //% advanced=true
-        turnOnLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_LED_ON);
-        }
-        
-        /**
-         * Trun off the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_off_temperature_led_flash block="%strip|turn off temperature led flash"
-        //% advanced=true
-        turnOffLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_LED_OFF);
-        }
-        
-        /**
-         * Enable device auto sleep mode.
-         */
-        //% blockId=mozi_enable_temperature_auto_sleep block="%strip|enable temperature auto sleep"
-        //% advanced=true
-        enableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
-        }
-        
-        /**
-         * Disable device auto sleep mode.
-         */
-        //% blockId=mozi_disable_temperature_auto_sleep block="%strip|disable temperature auto sleep"
-        //% advanced=true
-        disableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
-        }
-        
+
         /**
          * Get the temperature event status.
          */
@@ -1638,104 +986,12 @@ namespace mozi {
             })
         }
     }
-    
+
     
     export class Matrix
     {
         currentDeviceAddress: number;
-        
-        /**
-         * Get vendor ID of device.
-         */
-        //% blockId=mozi_get_matrix_vid block="%strip|get matrix vid"
-        //% advanced=true
-        getDeviceVID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get product ID of device.
-         */
-        //% blockId=mozi_get_matrix_pid block="%strip|get matrix pid"
-        //% advanced=true
-        getDevicePID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[2] + data[3] * 256);
-        }
-        
-        /**
-         * Change i2c address of device.
-         * @param newAddress the new i2c address of device, eg: 7
-         */
-        //% blockId=mozi_change_matrix_address block="%strip|change matrix address to|%newAddress"
-        //% newAddress.min=2 newAddress.max=126
-        //% advanced=true
-        changeDeviceAddress(newAddress: number = 7)
-        {
-            let data: Buffer = pins.createBuffer(2);
-            data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_SET_ADDR;
-            data[1] = newAddress;
-            i2cSendBytes(this.currentDeviceAddress, data);
-            this.currentDeviceAddress = newAddress;
-        }
-        
-        /**
-         * Restore the i2c address of device to default.
-         */
-        //% blockId=mozi_default_matrix_address block="%strip|default matrix address"
-        //% advanced=true
-        defaultDeviceAddress()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_RST_ADDR);
-        }
-        
-        /**
-         * Trun on the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_on_matrix_led_flash block="%strip|turn on matrix led flash"
-        //% advanced=true
-        turnOnLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_LED_ON);
-        }
-        
-        /**
-         * Trun off the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_off_matrix_led_flash block="%strip|turn off matrix led flash"
-        //% advanced=true
-        turnOffLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_LED_OFF);
-        }
-        
-        /**
-         * Enable device auto sleep mode.
-         */
-        //% blockId=mozi_enable_matrix_auto_sleep block="%strip|enable matrix auto sleep"
-        //% parts="Grove_Two_Led_Matrix" advanced=true
-        enableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
-        }
-        
-        /**
-         * Disable device auto sleep mode.
-         */
-        //% blockId=mozi_disable_matrix_auto_sleep block="%strip|disable matrix auto sleep"
-        //% advanced=true
-        disableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
-        }
-        
+
         /**
          * Display the LED bar mode on LED matrix.
          * @param bar set the Bar level you want to display from 0 to 18, eg: 0
@@ -1807,23 +1063,6 @@ namespace mozi {
         }
         
         /**
-         * Display user-defined pictures on LED matrix.
-         * @param buf the string pointer, the maximum number is 28 bytes, eg: 0, 0, 0, 0, 0
-         * @param time set the display time duration, set it to 0 to display forever, eg: 1000
-         */
-        //% blockId=mozi_matrix_dispaly_custom block="%strip|matrix display custom|%buf|time|%time|ms"
-        //% advanced=true
-        displayCustom(buf: number[], time: number)
-        {
-            let data: Buffer = pins.createBuffer(8);
-            data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_CUSTOM;
-            data[1] = time & 0xff;
-            data[2] = (time >> 8) & 0xff;
-            for(let i = 0; i < 5; i ++)data[i + 3] = buf[i];
-            i2cSendBytes(this.currentDeviceAddress, data);
-        }
-        
-        /**
          * Display nothing on LED Matrix.
          */
         //% blockId=mozi_matrix_dispaly_stop block="%strip|matrix display stop"
@@ -1846,104 +1085,12 @@ namespace mozi {
         matrix.currentDeviceAddress = address;
         return matrix;
     }
-    
+
     
     export class Buzzer
     {
         currentDeviceAddress: number;
-        
-                /**
-         * Get vendor ID of device.
-         */
-        //% blockId=mozi_get_buzzer_vid block="%strip|get buzzer vid"
-        //% advanced=true
-        getDeviceVID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[0] + data[1] * 256);
-        }
-        
-        /**
-         * Get product ID of device.
-         */
-        //% blockId=mozi_get_buzzer_pid block="%strip|get buzzer pid"
-        //% advanced=true
-        getDevicePID(): number
-        {
-            let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
-            return (data[2] + data[3] * 256);
-        }
-        
-        /**
-         * Change i2c address of device.
-         * @param newAddress the new i2c address of device, eg: 8
-         */
-        //% blockId=mozi_change_buzzer_address block="%strip|change buzzer address to|%newAddress"
-        //% newAddress.min=2 newAddress.max=126
-        //% advanced=true
-        changeDeviceAddress(newAddress: number = 8)
-        {
-            let data: Buffer = pins.createBuffer(2);
-            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_SET_ADDR;
-            data[1] = newAddress;
-            i2cSendBytes(this.currentDeviceAddress, data);
-            this.currentDeviceAddress = newAddress;
-        }
-        
-        /**
-         * Restore the i2c address of device to default.
-         */
-        //% blockId=mozi_default_buzzer_address block="%strip|default buzzer address"
-        //% advanced=true
-        defaultDeviceAddress()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_RST_ADDR);
-        }
-        
-        /**
-         * Trun on the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_on_buzzer_led_flash block="%strip|turn on buzzer led flash"
-        //% advanced=true
-        turnOnLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_LED_ON);
-        }
-        
-        /**
-         * Trun off the indicator LED flash mode.
-         */
-        //% blockId=mozi_turn_off_buzzer_led_flash block="%strip|turn off buzzer led flash"
-        //% advanced=true
-        turnOffLedFlash()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_LED_OFF);
-        }
-        
-        /**
-         * Enable device auto sleep mode.
-         */
-        //% blockId=mozi_enable_buzzer_auto_sleep block="%strip|enable buzzer auto sleep"
-        //% advanced=true
-        enableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
-        }
-        
-        /**
-         * Disable device auto sleep mode.
-         */
-        //% blockId=mozi_disable_buzzer_auto_sleep block="%strip|disable buzzer auto sleep"
-        //% advanced=true
-        disableAutoSleep()
-        {
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
-        }
-        
+
         /**
          * Play a tone for a given beat.
          * @param gamut the tone needed to play.
