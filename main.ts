@@ -1040,6 +1040,201 @@ namespace mozi {
     }
 
     
+    export class Temperature
+    {
+        currentDeviceAddress: number;
+        lastStatus: TEMP_EVENT_TYPE;
+        eventId: number;
+        
+        /**
+         * Get vendor ID of device.
+         */
+        //% blockId=mozi_get_temperature_vid block="%strip|get temperature vid"
+        //% advanced=true
+        getDeviceVID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get product ID of device.
+         */
+        //% blockId=mozi_get_temperature_pid block="%strip|get temperature pid"
+        //% advanced=true
+        getDevicePID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[2] + data[3] * 256);
+        }
+        
+        /**
+         * Change i2c address of device.
+         * @param newAddress the new i2c address of device, eg: 3
+         */
+        //% blockId=mozi_change_temperature_address block="%strip|change temperature address to|%newAddress"
+        //% advanced=true
+        changeDeviceAddress(newAddress: number = 3)
+        {
+            let data: Buffer = pins.createBuffer(2);
+            data[0] = GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_SET_ADDR;
+            data[1] = newAddress;
+            i2cSendBytes(this.currentDeviceAddress, data);
+            this.currentDeviceAddress = newAddress;
+        }
+        
+        /**
+         * Restore the i2c address of device to default.
+         */
+        //% blockId=mozi_default_temperature_address block="%strip|default temperature address"
+        //% advanced=true
+        defaultDeviceAddress()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_RST_ADDR);
+        }
+        
+        /**
+         * Trun on the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_on_temperature_led_flash block="%strip|turn on temperature led flash"
+        //% advanced=true
+        turnOnLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_LED_ON);
+        }
+        
+        /**
+         * Trun off the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_off_temperature_led_flash block="%strip|turn off temperature led flash"
+        //% advanced=true
+        turnOffLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_LED_OFF);
+        }
+        
+        /**
+         * Enable device auto sleep mode.
+         */
+        //% blockId=mozi_enable_temperature_auto_sleep block="%strip|enable temperature auto sleep"
+        //% advanced=true
+        enableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
+        }
+        
+        /**
+         * Disable device auto sleep mode.
+         */
+        //% blockId=mozi_disable_temperature_auto_sleep block="%strip|disable temperature auto sleep"
+        //% advanced=true
+        disableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
+        }
+        
+        /**
+         * Get the temperature event status.
+         */
+        //% blockId=mozi_get_temperature_event_status block="%strip|get temperature event status"
+        //% advanced=true
+        getEventStatus(): TEMP_EVENT_TYPE
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_GET_DEV_EVENT);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return data[0];
+        }
+        
+        /**
+         * Get the temperature value.
+         */
+        //% blockId=mozi_get_temperature_value block="%strip|get temperature value"
+        getTemperatureValue(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_GET_TEMP);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Set the temperature threshold level 0.
+         * @param value the value of temperature threshold level 0, eg: 10
+         */
+        //% blockId=mozi_set_temperature_threshold_0 block="%strip|set temperature threshold 0|%value"
+        //% advanced=true
+        setThreshold0(value: number = 10)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 0;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the temperature threshold level 1.
+         * @param value the value of temperature threshold level 1, eg: 40
+         */
+        //% blockId=mozi_set_temperature_threshold_1 block="%strip|set temperature threshold 1|%value"
+        //% advanced=true
+        setThreshold1(value: number = 40)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 1;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+    }
+    
+    /**
+     * Create a new driver for temperature
+     * @param address the address of device, eg: 3
+     */
+    //% blockId=mozi_create_temperature block="create temperature and set address|%address"
+    export function createTemperature(address: number = 3): Temperature
+    {
+        moziEventId += 1;
+        let temperature = new Temperature();
+        temperature.currentDeviceAddress = address;
+        temperature.lastStatus = TEMP_EVENT_TYPE .LESS_THAN_THD_0;
+        temperature.eventId = moziEventId;
+        return temperature;
+    }
+    
+    /**
+     * Registers code to run when a particular temperature is detected
+     * @param temperature device be specified
+     * @param event type of temperature to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_imu_create_event block="on temperature|%temperature|event|%event"
+    export function onTemperature(temperature: Temperature, event: TEMP_EVENT_TYPE, handler: Action) {
+        control.onEvent(temperature.eventId, event, handler);
+        if (!temperature) {
+            control.inBackground(() => {
+                while(true)
+                {
+                    const temperatureStatus = temperature.getEventStatus();
+                    if (temperatureStatus != temperature.lastStatus) {
+                        temperature.lastStatus = temperatureStatus;
+                        control.raiseEvent(temperature.eventId, temperature.lastStatus);
+                    }
+                    basic.pause(50);
+                }
+            })
+        }
+    }
+    
+    
     export class Matrix
     {
         currentDeviceAddress: number;
