@@ -646,6 +646,203 @@ namespace mozi {
     }
 
     
+    export class Light
+    {
+        currentDeviceAddress: number;
+        lastStatus: LIGHT_EVENT_TYPE ;
+        eventId: number;
+        
+        /**
+         * Get vendor ID of device.
+         */
+        //% blockId=mozi_get_light_vid block="%strip|get light vid"
+        //% advanced=true
+        getDeviceVID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get product ID of device.
+         */
+        //% blockId=mozi_get_light_pid block="%strip|get light pid"
+        //% advanced=true
+        getDevicePID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[2] + data[3] * 256);
+        }
+        
+        /**
+         * Change i2c address of device.
+         * @param newAddress the new i2c address of device, eg: 5
+         */
+        //% blockId=mozi_change_light_address block="%strip|change light address to|%newAddress"
+        //% newAddress.min=2 newAddress.max=126
+        //% advanced=true
+        changeDeviceAddress(newAddress: number = 5)
+        {
+            let data: Buffer = pins.createBuffer(2);
+            data[0] = GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_SET_ADDR;
+            data[1] = newAddress;
+            i2cSendBytes(this.currentDeviceAddress, data);
+            this.currentDeviceAddress = newAddress;
+        }
+        
+        /**
+         * Restore the i2c address of device to default.
+         */
+        //% blockId=mozi_default_light_address block="%strip|default light address"
+        //% advanced=true
+        defaultDeviceAddress()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_RST_ADDR);
+        }
+        
+        /**
+         * Trun on the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_on_light_led_flash block="%strip|turn on light led flash"
+        //% advanced=true
+        turnOnLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_LED_ON);
+        }
+        
+        /**
+         * Trun off the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_off_light_led_flash block="%strip|turn off light led flash"
+        //% advanced=true
+        turnOffLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_LED_OFF);
+        }
+        
+        /**
+         * Enable device auto sleep mode.
+         */
+        //% blockId=mozi_enable_light_auto_sleep block="%strip|enable light auto sleep"
+        //% advanced=true
+        enableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
+        }
+        
+        /**
+         * Disable device auto sleep mode.
+         */
+        //% blockId=mozi_disable_light_auto_sleep block="%strip|disable light auto sleep"
+        //% advanced=true
+        disableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
+        }
+        
+        /**
+         * Get the light event status.
+         */
+        //% blockId=mozi_get_light_event_status block="%strip|get light event status"
+        //% advanced=true
+        getEventStatus(): LIGHT_EVENT_TYPE
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_GET_DEV_EVENT);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return data[0];
+        }
+        
+        /**
+         * Get the light sensor value.
+         */
+        //% blockId=mozi_get_light_lux block="%strip|get light lux"
+        getLightLux(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_GET_LIGHT);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Set the light threshold level 0.
+         * @param value the value of light threshold level 0, eg: 50
+         */
+        //% blockId=mozi_set_light_threshold_0 block="%strip|set light threshold 0|%value"
+        //% advanced=true
+        setThreshold0(value: number = 50)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 0;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the light threshold level 1.
+         * @param value the value of light threshold level 1, eg: 200
+         */
+        //% blockId=mozi_set_light_threshold_1 block="%strip|set light threshold 1|%value"
+        //% advanced=true
+        setThreshold1(value: number = 200)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 1;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+    }
+    
+    /**
+     * Create a new driver for light
+     * @param address the address of device, eg: 5
+     */
+    //% blockId=mozi_create_light block="create light and set address|%address"
+    //% address.min=2 address.max=126
+    export function createLight(address: number = 5): Light
+    {
+        moziEventId += 1;
+        let light = new Light();
+        light.currentDeviceAddress = address;
+        light.lastStatus = LIGHT_EVENT_TYPE.LESS_THAN_THD_0;
+        light.eventId = moziEventId;
+        return light;
+    }
+    
+    /**
+     * Registers code to run when a particular light is detected
+     * @param light device be specified
+     * @param event type of imu to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_imu_create_event block="on light|%light|event|%event"
+    export function onLight(light: Light, event: LIGHT_EVENT_TYPE, handler: Action) {
+        control.onEvent(light.eventId, event, handler);
+        if (!light) {
+            control.inBackground(() => {
+                while(true)
+                {
+                    const lightStatus = light.getEventStatus();
+                    if (lightStatus != light.lastStatus) {
+                        light.lastStatus = lightStatus;
+                        control.raiseEvent(light.eventId, light.lastStatus);
+                    }
+                    basic.pause(50);
+                }
+            })
+        }
+    }
+    
+    
     export class Matrix
     {
         currentDeviceAddress: number;
