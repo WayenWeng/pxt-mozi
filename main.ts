@@ -646,6 +646,411 @@ namespace mozi {
     }
 
     
+    export class IMU
+    {
+        currentDeviceAddress: number;
+        lastStatus: IMU_EVENT_TYPE;
+        eventId: number;
+        
+        private numberFormat(data: number): number
+        {
+            if(data > 0x7fff)data = 0 - ((data ^ 0xffff) + 1);
+            return data;
+        }
+        
+        /**
+         * Get vendor ID of device.
+         */
+        //% blockId=mozi_get_imu_vid block="%strip|get imu vid"
+        //% advanced=true
+        getDeviceVID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get product ID of device.
+         */
+        //% blockId=mozi_get_imu_pid block="%strip|get imu pid"
+        //% advanced=true
+        getDevicePID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[2] + data[3] * 256);
+        }
+        
+        /**
+         * Change i2c address of device.
+         * @param newAddress the new i2c address of device, eg: 4
+         */
+        //% blockId=mozi_change_imu_address block="%strip|change imu address to|%newAddress"
+        //% newAddress.min=2 newAddress.max=126
+        //% advanced=true
+        changeDeviceAddress(newAddress: number = 4)
+        {
+            let data: Buffer = pins.createBuffer(2);
+            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_ADDR;
+            data[1] = newAddress;
+            i2cSendBytes(this.currentDeviceAddress, data);
+            this.currentDeviceAddress = newAddress;
+        }
+        
+        /**
+         * Restore the i2c address of device to default.
+         */
+        //% blockId=mozi_default_imu_address block="%strip|default imu address"
+        //% advanced=true
+        defaultDeviceAddress()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_RST_ADDR);
+        }
+        
+        /**
+         * Trun on the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_on_imu_led_flash block="%strip|turn on imu led flash"
+        //% advanced=true
+        turnOnLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_LED_ON);
+        }
+        
+        /**
+         * Trun off the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_off_imu_led_flash block="%strip|turn off imu led flash"
+        //% advanced=true
+        turnOffLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_LED_OFF);
+        }
+        
+        /**
+         * Enable device auto sleep mode.
+         */
+        //% blockId=mozi_enable_imu_auto_sleep block="%strip|enable imu auto sleep"
+        //% advanced=true
+        enableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_AUTO_SLEEP_ON);
+        }
+        
+        /**
+         * Disable device auto sleep mode.
+         */
+        //% blockId=mozi_disable_imu_auto_sleep block="%strip|disable imu auto sleep"
+        //% advanced=true
+        disableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_AUTO_SLEEP_OFF);
+        }
+        
+        /**
+         * Get the imu event status.
+         */
+        //% blockId=mozi_get_imu_event_status block="%strip|get imu event status"
+        //% advanced=true
+        getEventStatus(): IMU_EVENT_TYPE
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_DEV_EVENT);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return data[0];
+        }
+        
+        
+        /**
+         * Get the accelerometer value on X-axis.
+         */
+        //% blockId=mozi_get_imu_accel_axis_x block="%strip|get accel axis x"
+        getAccelAxisX(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_X);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the accelerometer value on Y-axis.
+         */
+        //% blockId=mozi_get_imu_accel_axis_y block="%strip|get accel axis y"
+        getAccelAxisY(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_Y);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the accelerometer value on Z-axis.
+         */
+        //% blockId=mozi_get_imu_accel_axis_z block="%strip|get accel axis z"
+        getAccelAxisZ(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+
+        /**
+         * Get the gyroscope value on X-axis.
+         */
+        //% blockId=mozi_get_imu_gyro_axis_x block="%strip|get gyro axis x"
+        //% advanced=true
+        getGyroAxisX(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_X);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the gyroscope value on Y-axis.
+         */
+        //% blockId=mozi_get_imu_gyro_axis_y block="%strip|get gyro axis y"
+        //% advanced=true
+        getGyroAxisY(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_Y);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the gyroscope value on Z-axis.
+         */
+        //% blockId=mozi_get_imu_gyro_axis_z block="%strip|get gyro axis z"
+        //% advanced=true
+        getGyroAxisZ(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the magnetometer value on X-axis.
+         */
+        //% blockId=mozi_get_imu_magnet_axis_x block="%strip|get magnet axis x"
+        //% advanced=true
+        getMagnetAxisX(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_X);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the magnetometer value on Y-axis.
+         */
+        //% blockId=mozi_get_imu_magnet_axis_y block="%strip|get magnet axis y"
+        //% advanced=true
+        getMagnetAxisY(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_Y);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the magnetometer value on Z-axis.
+         */
+        //% blockId=mozi_get_imu_magnet_axis_z block="%strip|get magnet axis z"
+        //% advanced=true
+        getMagnetAxisZ(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the accelerometer values on X, Y and Z axis.
+         */
+        //% blockId=mozi_get_imu_accel_3_axis_data block="%strip|get accel 3 axis"
+        //% advanced=true
+        getAccel3AxisData(): number[]
+        {
+            let data: Buffer = pins.createBuffer(6);
+            let accel: number[] = [0,0,0];
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_X_Y_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 6);           
+            accel[0] = this.numberFormat(data[0] + (data[1] * 256));
+            accel[1] = this.numberFormat(data[2] + (data[3] * 256));
+            accel[2] = this.numberFormat(data[4] + (data[5] * 256));
+            return accel;
+        }
+        
+        /**
+         * Get the gyroscope values on X, Y and Z axis.
+         */
+        //% blockId=mozi_get_imu_gyro_3_axis_data block="%strip|get gyro 3 axis"
+        //% advanced=true
+        getGyro3AxisData(): number[]
+        {
+            let data: Buffer = pins.createBuffer(6);
+            let gyro: number[] = [0,0,0];
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_GYRO_X_Y_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 6);
+            gyro[0] = this.numberFormat(data[0] + data[1] * 256);
+            gyro[1] = this.numberFormat(data[2] + data[3] * 256);
+            gyro[2] = this.numberFormat(data[4] + data[5] * 256);
+            return gyro;
+        }
+        
+        /**
+         * Get the magnetometer values on X, Y and Z axis.
+         */
+        //% blockId=mozi_get_imu_magnet_3_axis_data block="%strip|get magnet 3 axis"
+        //% advanced=true
+        getMagnet3AxisData(): number[]
+        {
+            let data: Buffer = pins.createBuffer(6);
+            let magnet: number[] = [0,0,0];
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_MAG_X_Y_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 6);
+            magnet[0] = this.numberFormat(data[0] + data[1] * 256);
+            magnet[1] = this.numberFormat(data[2] + data[3] * 256);
+            magnet[2] = this.numberFormat(data[4] + data[5] * 256);
+            return magnet;
+        }
+        
+        /**
+         * Get the values of accelerometer, gyroscope and magnetometer on X, Y and Z axis.
+         */
+        //% blockId=mozi_get_imu_9_axis_data block="%strip|get imu 9 axis"
+        //% advanced=true
+        get9AxisData(): number[]
+        {
+            let data: Buffer = pins.createBuffer(18);
+            let imu: number[] = [0,0,0,0,0,0,0,0,0];
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ALL_X_Y_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 18);
+            for(let i = 0; i < 3; i ++)
+            {
+                imu[i] = this.numberFormat(data[i * 2] + data[i * 2 + 1] * 256);
+                imu[i + 3] = this.numberFormat(data[i * 2 + 6] + data[i * 2 + 1 + 6] * 256);
+                imu[i + 6] = this.numberFormat(data[i * 2 + 12] + data[i * 2 + 1 + 12] * 256);
+            }
+            return imu;
+        }
+        
+        /**
+         * Set the range of accelerometer.
+         * @param range the range of accelerometer.
+         */
+        //% blockId=mozi_set_imu_accel_range block="%strip|set accel range|%range"
+        //% advanced=true
+        setAccelRange(range: IMU_ACCEL_FSR_TYPE)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RANGE;
+            data[1] = 0;
+            data[2] = range;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the rate of accelerometer.
+         * @param rate the rate of accelerometer.
+         */
+        //% blockId=mozi_set_imu_accel_rate block="%strip|set accel rate|%rate"
+        //% advanced=true
+        setAccelRate(rate: IMU_ACCEL_DLPF_TYPE)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RATE;
+            data[1] = 0;
+            data[2] = rate;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the range of gyroscope.
+         * @param range the range of gyroscope.
+         */
+        //% blockId=mozi_set_imu_gyro_range block="%strip|set gyro range|%range"
+        //% advanced=true
+        setGyroRange(range: IMU_GYRO_FSR_TYPE)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RANGE;
+            data[1] = 1;
+            data[2] = range;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the rate of gyroscope.
+         * @param rate the rate of gyroscope.
+         */
+        //% blockId=mozi_set_imu_gyro_rate block="%strip|set gyro rate|%rate"
+        //% advanced=true
+        setGyroRate(rate: IMU_GYRO_DLPF_TYPE)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_SET_RATE;
+            data[1] = 1;
+            data[2] = rate;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+    }
+    
+    /**
+     * Create a new driver for imu
+     * @param address the address of device, eg: 4
+     */
+    //% blockId=mozi_create_imu block="create imu and set address|%address"
+    //% address.min=2 address.max=126
+    export function createIMU(address: number = 4): IMU
+    {
+        moziEventId += 1;
+        let imu = new IMU();
+        imu.currentDeviceAddress = address;
+        imu.lastStatus = IMU_EVENT_TYPE.EVENT_NULL;
+        imu.eventId = moziEventId;
+        return imu;
+    }
+    
+    /**
+     * Registers code to run when a particular imu is detected
+     * @param imu device be specified
+     * @param event type of imu to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_imu_create_event block="on imu|%imu|event|%event"
+    export function onIMU(imu: IMU, event: IMU_EVENT_TYPE, handler: Action) {
+        control.onEvent(imu.eventId, event, handler);
+        if (!imu) {
+            control.inBackground(() => {
+                while(true)
+                {
+                    const imuStatus = imu.getEventStatus();
+                    if (imuStatus != imu.lastStatus) {
+                        imu.lastStatus = imuStatus;
+                        control.raiseEvent(imu.eventId, imu.lastStatus);
+                    }
+                    basic.pause(50);
+                }
+            })
+        }
+    }
+    
+    
     export class Light
     {
         currentDeviceAddress: number;
