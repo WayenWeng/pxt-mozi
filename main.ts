@@ -154,7 +154,7 @@ namespace mozi {
         getDeviceVID(): number
         {
             let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            i2cSendByte(this.currentDeviceAddress, 0);
             data = i2cReceiveBytes(this.currentDeviceAddress, 4);
             return (data[0] + data[1] * 256);
         }
@@ -167,15 +167,81 @@ namespace mozi {
         getDevicePID(): number
         {
             let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            i2cSendByte(this.currentDeviceAddress, 0);
             data = i2cReceiveBytes(this.currentDeviceAddress, 4);
             return (data[2] + data[3] * 256);
         }
+        
+        /**
+         * Change i2c address of device.
+         * @param newAddress the new i2c address of device, eg: 2
+         */
+        //% blockId=mozi_change_device_address block="%strip|change address to|%newAddress"
+        //% newAddress.min=2 newAddress.max=126
+        //% advanced=true
+        changeDeviceAddress(newAddress: number = 2)
+        {
+            let data: Buffer = pins.createBuffer(2);
+            data[0] = 0xc0;
+            data[1] = newAddress;
+            i2cSendBytes(this.currentDeviceAddress, data);
+            this.currentDeviceAddress = newAddress;
+        }
+        
+        /**
+         * Restore the i2c address of device to default.
+         */
+        //% blockId=mozi_default_device_address block="%strip|default address"
+        //% advanced=true
+        defaultDeviceAddress()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xc1);
+        }
+        
+        /**
+         * Trun on the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_on_device_led_flash block="%strip|turn on led flash"
+        //% advanced=true
+        turnOnLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb0);
+        }
+        
+        /**
+         * Trun off the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_off_device_led_flash block="%strip|turn off led flash"
+        //% advanced=true
+        turnOffLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb1);
+        }
+        
+        /**
+         * Enable device auto sleep mode.
+         */
+        //% blockId=mozi_enable_device_auto_sleep block="%strip|enable auto sleep"
+        //% advanced=true
+        enableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb2);
+        }
+        
+        /**
+         * Disable device auto sleep mode.
+         */
+        //% blockId=mozi_disable_device_auto_sleep block="%strip|disable auto sleep"
+        //% advanced=true
+        disableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb3);
+        }
     }
     
-    export class Button extends Mozi
+    export class MoziInput extends Mozi
     {
-        lastStatus: BUTTON_EVENT_TYPE;
+        lastStatus: number;
         eventId: number;
         
         /**
@@ -186,10 +252,15 @@ namespace mozi {
         getEventStatus(): number
         {
             let data: Buffer = pins.createBuffer(4);
-            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_EVENT);
+            i2cSendByte(this.currentDeviceAddress, 0x01);
             data = i2cReceiveBytes(this.currentDeviceAddress, 4);
             return data[0];
         }
+    }
+    
+    export class Button extends MoziInput
+    {
+
     }
     
     /**
