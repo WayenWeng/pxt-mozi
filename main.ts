@@ -1,420 +1,1222 @@
 
-const initRegisterArray: number[] = [
-    0xEF, 0x00, 0x32, 0x29, 0x33, 0x01, 0x34, 0x00, 0x35, 0x01, 0x36, 0x00, 0x37, 0x07, 0x38, 0x17,
-    0x39, 0x06, 0x3A, 0x12, 0x3F, 0x00, 0x40, 0x02, 0x41, 0xFF, 0x42, 0x01, 0x46, 0x2D, 0x47, 0x0F,
-    0x48, 0x3C, 0x49, 0x00, 0x4A, 0x1E, 0x4B, 0x00, 0x4C, 0x20, 0x4D, 0x00, 0x4E, 0x1A, 0x4F, 0x14,
-    0x50, 0x00, 0x51, 0x10, 0x52, 0x00, 0x5C, 0x02, 0x5D, 0x00, 0x5E, 0x10, 0x5F, 0x3F, 0x60, 0x27,
-    0x61, 0x28, 0x62, 0x00, 0x63, 0x03, 0x64, 0xF7, 0x65, 0x03, 0x66, 0xD9, 0x67, 0x03, 0x68, 0x01,
-    0x69, 0xC8, 0x6A, 0x40, 0x6D, 0x04, 0x6E, 0x00, 0x6F, 0x00, 0x70, 0x80, 0x71, 0x00, 0x72, 0x00,
-    0x73, 0x00, 0x74, 0xF0, 0x75, 0x00, 0x80, 0x42, 0x81, 0x44, 0x82, 0x04, 0x83, 0x20, 0x84, 0x20,
-    0x85, 0x00, 0x86, 0x10, 0x87, 0x00, 0x88, 0x05, 0x89, 0x18, 0x8A, 0x10, 0x8B, 0x01, 0x8C, 0x37,
-    0x8D, 0x00, 0x8E, 0xF0, 0x8F, 0x81, 0x90, 0x06, 0x91, 0x06, 0x92, 0x1E, 0x93, 0x0D, 0x94, 0x0A,
-    0x95, 0x0A, 0x96, 0x0C, 0x97, 0x05, 0x98, 0x0A, 0x99, 0x41, 0x9A, 0x14, 0x9B, 0x0A, 0x9C, 0x3F,
-    0x9D, 0x33, 0x9E, 0xAE, 0x9F, 0xF9, 0xA0, 0x48, 0xA1, 0x13, 0xA2, 0x10, 0xA3, 0x08, 0xA4, 0x30,
-    0xA5, 0x19, 0xA6, 0x10, 0xA7, 0x08, 0xA8, 0x24, 0xA9, 0x04, 0xAA, 0x1E, 0xAB, 0x1E, 0xCC, 0x19,
-    0xCD, 0x0B, 0xCE, 0x13, 0xCF, 0x64, 0xD0, 0x21, 0xD1, 0x0F, 0xD2, 0x88, 0xE0, 0x01, 0xE1, 0x04,
-    0xE2, 0x41, 0xE3, 0xD6, 0xE4, 0x00, 0xE5, 0x0C, 0xE6, 0x0A, 0xE7, 0x00, 0xE8, 0x00, 0xE9, 0x00,
-    0xEE, 0x07, 0xEF, 0x01, 0x00, 0x1E, 0x01, 0x1E, 0x02, 0x0F, 0x03, 0x10, 0x04, 0x02, 0x05, 0x00,
-    0x06, 0xB0, 0x07, 0x04, 0x08, 0x0D, 0x09, 0x0E, 0x0A, 0x9C, 0x0B, 0x04, 0x0C, 0x05, 0x0D, 0x0F,
-    0x0E, 0x02, 0x0F, 0x12, 0x10, 0x02, 0x11, 0x02, 0x12, 0x00, 0x13, 0x01, 0x14, 0x05, 0x15, 0x07,
-    0x16, 0x05, 0x17, 0x07, 0x18, 0x01, 0x19, 0x04, 0x1A, 0x05, 0x1B, 0x0C, 0x1C, 0x2A, 0x1D, 0x01,
-    0x1E, 0x00, 0x21, 0x00, 0x22, 0x00, 0x23, 0x00, 0x25, 0x01, 0x26, 0x00, 0x27, 0x39, 0x28, 0x7F,
-    0x29, 0x08, 0x30, 0x03, 0x31, 0x00, 0x32, 0x1A, 0x33, 0x1A, 0x34, 0x07, 0x35, 0x07, 0x36, 0x01,
-    0x37, 0xFF, 0x38, 0x36, 0x39, 0x07, 0x3A, 0x00, 0x3E, 0xFF, 0x3F, 0x00, 0x40, 0x77, 0x41, 0x40,
-    0x42, 0x00, 0x43, 0x30, 0x44, 0xA0, 0x45, 0x5C, 0x46, 0x00, 0x47, 0x00, 0x48, 0x58, 0x4A, 0x1E,
-    0x4B, 0x1E, 0x4C, 0x00, 0x4D, 0x00, 0x4E, 0xA0, 0x4F, 0x80, 0x50, 0x00, 0x51, 0x00, 0x52, 0x00,
-    0x53, 0x00, 0x54, 0x00, 0x57, 0x80, 0x59, 0x10, 0x5A, 0x08, 0x5B, 0x94, 0x5C, 0xE8, 0x5D, 0x08,
-    0x5E, 0x3D, 0x5F, 0x99, 0x60, 0x45, 0x61, 0x40, 0x63, 0x2D, 0x64, 0x02, 0x65, 0x96, 0x66, 0x00,
-    0x67, 0x97, 0x68, 0x01, 0x69, 0xCD, 0x6A, 0x01, 0x6B, 0xB0, 0x6C, 0x04, 0x6D, 0x2C, 0x6E, 0x01,
-    0x6F, 0x32, 0x71, 0x00, 0x72, 0x01, 0x73, 0x35, 0x74, 0x00, 0x75, 0x33, 0x76, 0x31, 0x77, 0x01,
-    0x7C, 0x84, 0x7D, 0x03, 0x7E, 0x01
-];
-
-let TubeTab: number [] = [
-    0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07,
-    0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71
-];
-
 /**
- * Grove Gestures
+ * 
  */
-enum GroveGesture {
-    //% block=None
-    None = 0,
-    //% block=Right
-    Right = 1,
-    //% block=Left
-    Left = 2,
-    //% block=Up
-    Up = 3,
-    //% block=Down
-    Down = 4,
-    //% block=Forward
-    Forward = 5,
-    //% block=Backward
-    Backward = 6,
-    //% block=Clockwise
-    Clockwise = 7,
-    //% block=Anticlockwise
-    Anticlockwise = 8,
-    //% block=Wave
-    Wave = 9
+enum GROVE_TWO_DOUBLE_BUTTON {
+    DEF_I2C_ADDR = 0x02,  // The device i2c address in default
+    VID = 0x2886,         // Vender ID of the device
+    PID = 0x0002          // Product ID of the device
 }
 
 /**
- * Functions to operate Grove module.
+ * 
  */
-//% weight=10 color=#9F79EE icon="\uf108" block="Grove"
-namespace grove {
-    const gestureEventId = 3100;
-    let lastGesture = GroveGesture.None;
-    let paj7620: PAJ7620 = undefined;
-    let data: number = 0;
+enum GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE {
+    I2C_CMD_GET_DEV_ID = 0x00,      // This command gets device ID information
+    I2C_CMD_GET_DEV_EVENT = 0x01,   // This command gets device event status
+    I2C_CMD_LED_ON = 0xb0,          // This command turns on the indicator LED flash mode
+    I2C_CMD_LED_OFF = 0xb1,         // This command turns off the indicator LED flash mode
+    I2C_CMD_AUTO_SLEEP_ON = 0xb2,   // This command enable device auto sleep mode
+    I2C_CMD_AUTO_SLEEP_OFF = 0xb3,  // This command disable device auto sleep mode (default mode)
+    I2C_CMD_SET_ADDR = 0xc0,        // This command sets device i2c address
+    I2C_CMD_RST_ADDR = 0xc1         // This command resets device i2c address
+}
+
+/**
+ * 
+ */
+enum BUTTON_EVENT_TYPE {
+    //% block=None
+    BUTTON_NO_EVENT = 0,
+    //% block=A_Click
+	BUTTON_A_CLICK = 1,
+    //% block=A_DblClick
+	BUTTON_A_DOUBLE_CLICK = 2,
+    //% block=A_Hold
+	BUTTON_A_LONG_PRESS = 3,
+    //% block=B_Click
+	BUTTON_B_CLICK = 4,
+    //% block=B_DblClick
+	BUTTON_B_DOUBLE_CLICK = 5,
+    //% block=B_Hold
+	BUTTON_B_LONG_PRESS = 6,
+    //% block=A_B_Click
+	BUTTON_A_AND_B_CLICK = 7,
+    //% block=A_B_DblClick
+	BUTTON_A_AND_B_DOUBLE_CLICK = 8,
+    //% block=A_B_Hold
+	BUTTON_A_AND_B_LONG_PRESS = 9
+}
+
+
+/**
+ * 
+ */
+enum GROVE_TWO_LED_MATRIX {
+    DEF_I2C_ADDR = 0x07,  // The device i2c address in default
+    VID = 0x2886,         // Vender ID of the device
+    PID = 0x8002          // Product ID of the device
+}
+
+/**
+ * 
+ */
+enum GROVE_TWO_LED_MATRIX_CMD_TYPE {
+    I2C_CMD_GET_DEV_ID = 0x00,      // This command gets device ID information
+    I2C_CMD_DISP_BAR = 0x01,        // This command displays LED bar
+    I2C_CMD_DISP_EMOJI = 0x02,      // This command displays pixel emoji
+    I2C_CMD_DISP_NUM = 0x03,        // This command displays number
+    I2C_CMD_DISP_STR = 0x04,        // This command displays string
+    I2C_CMD_DISP_CUSTOM = 0x05,     // This command displays user-defined pictures
+    I2C_CMD_DISP_OFF = 0x06,        // This command displays nothing
+    I2C_CMD_LED_ON = 0xb0,          // This command turns on the indicator LED flash mode
+    I2C_CMD_LED_OFF = 0xb1,         // This command turns off the indicator LED flash mode
+    I2C_CMD_AUTO_SLEEP_ON = 0xb2,   // This command enable device auto sleep mode
+    I2C_CMD_AUTO_SLEEP_OFF = 0xb3,  // This command disable device auto sleep mode (default mode)
+    I2C_CMD_SET_ADDR = 0xc0,        // This command sets device i2c address
+    I2C_CMD_RST_ADDR = 0xc1,        // This command resets device i2c address
+}
+
+
+/**
+ * 
+ */
+enum EMOJI_TYPE {
+    //% block=Face
+    FACE = 0,
+    //% block=Mad
+    MAD = 1,
+    //% block=Sad
+    SAD = 2,
+    //% block=Smile
+    SMILE = 3,
+    //% block=Surprise
+    SURPRISE = 4
+}
+
+
+/**
+ * 
+ */
+enum GROVE_TWO_BUZZER {
+    DEF_I2C_ADDR = 0x08,  // The device i2c address in default
+    VID = 0x2886,         // Vender ID of the device
+    PID = 0x8003          // Product ID of the device
+}
+
+/**
+ * 
+ */
+enum GROVE_TWO_BUZZER_CMD_TYPE {
+    I2C_CMD_GET_DEV_ID = 0x00,      // This command gets device ID information
+    I2C_CMD_PLAY_TONE = 0x01,       // This command plays a tone for a given beat
+    I2C_CMD_RING_TONE = 0x02,       // This command plays a tone for a given duration
+    I2C_CMD_PLAY_MELODY = 0x03,     // This command plays a melody
+    I2C_CMD_PLAY_STOP = 0x04,       // This command stops playing anything 
+    I2C_CMD_SET_BPM = 0x05,         // This command sets BPM
+    I2C_CMD_CHG_BPM = 0x06,         // This command changes BPM 
+    I2C_CMD_GET_BPM = 0x07,         // This command gets BPM
+    I2C_CMD_LED_ON = 0xb0,          // This command turns on the indicator LED flash mode
+    I2C_CMD_LED_OFF = 0xb1,         // This command turns off the indicator LED flash mode
+    I2C_CMD_AUTO_SLEEP_ON = 0xb2,   // This command enable device auto sleep mode
+    I2C_CMD_AUTO_SLEEP_OFF = 0xb3,  // This command disable device auto sleep mode (default mode)
+    I2C_CMD_SET_ADDR = 0xc0,        // This command sets device i2c address
+    I2C_CMD_RST_ADDR = 0xc1,        // This command resets device i2c address
+}
+
+/**
+ * 
+ */
+enum GAMUT_TYPE {
+    //% block=O
+    NOTE_R0 = 0, // Null
+    //% block=C4
+	NOTE_C4 = 1, // Do
+    //% block=D4
+	NOTE_D4 = 2, // Re
+    //% block=E4
+	NOTE_E4 = 3, // Mi
+    //% block=F4
+	NOTE_F4 = 4, // Fa
+    //% block=G4
+	NOTE_G4 = 5, // So
+    //% block=A4
+	NOTE_A4 = 6, // La
+    //% block=B4
+	NOTE_B4 = 7, // Si
+    //% block=C5
+	NOTE_C5 = 8, // Do
+    //% block=D5
+	NOTE_D5 = 9, // Re
+    //% block=E5
+	NOTE_E5 = 10, // Mi
+    //% block=F5
+	NOTE_F5 = 11, // Fa
+    //% block=G5
+	NOTE_G5 = 12, // So
+    //% block=A5
+	NOTE_A5 = 13, // La
+    //% block=B5
+	NOTE_B5 = 14, // Si
+    //% block=C6
+	NOTE_C6 = 15, // Do
+    //% block=D6
+	NOTE_D6 = 16, // Re
+    //% block=E6
+	NOTE_E6 = 17, // Mi
+    //% block=F6
+	NOTE_F6 = 18, // Fa
+    //% block=G6
+	NOTE_G6 = 19, // So
+    //% block=A6
+	NOTE_A6 = 20, // La
+    //% block=B6
+	NOTE_B6 = 21, // Si
+}
+
+/**
+ * 
+ */
+enum BEAT_TYPE
+{
+    //% block=1 beat
+	BEAT_1 = 0,		// 1 beat, 60 * 1000 / BPM = 500 ms(BPM = 120)
+    //% block=2 beat
+	BEAT_2 = 1, 	// 2 beat, 1000 ms
+    //% block=4 beat
+	BEAT_4 = 2, 	// 4 beat, 2000 ms
+    //% block=8 beat
+	BEAT_8 = 3, 	// 8 beat, 4000 ms
+    //% block=1/2 beat
+	BEAT_1_2 = 4,	// 1/2 beat, 250 ms
+    //% block=1/4 beat
+	BEAT_1_4 = 5,	// 1/4 beat, 125 ms
+    //% block=1/8 beat
+	BEAT_1_8 = 6,	// 1/8 beat, 62.5 ms
+    //% block=1/16 beat
+	BEAT_1_16 = 7,	// 1/16 beat, 31.25 ms
+};
+
+
+/**
+ * 
+ */
+enum GROVE_TWO_IMU_9DOF {
+    DEF_I2C_ADDR = 0x04,  // The device i2c address in default
+    VID = 0x2886,         // Vender ID of the device
+    PID = 0x0004          // Product ID of the device
+}
+
+/**
+ * 
+ */
+enum GROVE_TWO_IMU_9DOF_CMD_TYPE {
+    I2C_CMD_GET_DEV_ID = 0x00,      // This command gets device ID information
+    I2C_CMD_GET_DEV_EVENT = 0x01,   // This command gets device event status
+    I2C_CMD_GET_ACCEL_X = 0x02,     // This command gets the accelerometer value on X-axis
+    I2C_CMD_GET_ACCEL_Y = 0x03,     // This command gets the accelerometer value on Y-axis
+    I2C_CMD_GET_ACCEL_Z = 0x04,     // This command gets the accelerometer value on Z-axis
+    I2C_CMD_GET_GYRO_X = 0x05,      // This command gets the gyroscope value on X-axis
+    I2C_CMD_GET_GYRO_Y = 0x06,      // This command gets the gyroscope value on Y-axis
+    I2C_CMD_GET_GYRO_Z = 0x07,      // This command gets the gyroscope value on Z-axis
+    I2C_CMD_GET_MAG_X = 0x08,       // This command gets the magnetometer value on X-axis
+    I2C_CMD_GET_MAG_Y = 0x09,       // This command gets the magnetometer value on Y-axis
+    I2C_CMD_GET_MAG_Z = 0x0a,       // This command gets the magnetometer value on Z-axis
+    I2C_CMD_GET_ACCEL_X_Y_Z = 0x0b, // This command gets the accelerometer values on ALL axis
+    I2C_CMD_GET_GYRO_X_Y_Z = 0x0c,  // This command gets the gyroscope values on ALL axis
+    I2C_CMD_GET_MAG_X_Y_Z = 0x0d,   // This command gets the magnetometer values on ALL axis
+    I2C_CMD_GET_ALL_X_Y_Z = 0x0e,   // This command gets the values of accelerometer, gyroscope and magnetometer on ALL axis
+    I2C_CMD_GET_HEADING = 0x0f,     // This command gets direction angle
+    I2C_CMD_GET_ROTATION = 0x10,    // This command gets rotation angle
+    I2C_CMD_SET_RANGE = 0x11,       // This command sets range
+    I2C_CMD_SET_RATE = 0x12,        // This command sets rate
+    I2C_CMD_LED_ON = 0xb0,          // This command turns on the indicator LED flash mode
+    I2C_CMD_LED_OFF = 0xb1,         // This command turns off the indicator LED flash mode
+    I2C_CMD_AUTO_SLEEP_ON = 0xb2,   // This command enable device auto sleep mode
+    I2C_CMD_AUTO_SLEEP_OFF = 0xb3,  // This command disable device auto sleep mode (default mode)
+    I2C_CMD_SET_ADDR = 0xc0,        // This command sets device i2c address
+    I2C_CMD_RST_ADDR = 0xc1,        // This command resets device i2c address
+}
+
+
+/**
+ * 
+ */
+enum IMU_EVENT_TYPE // imu event define
+{
+    //% block=None
+    EVENT_NULL = 0,
+    //% block=X+
+    TILT_X_P = 1,
+    //% block=X-
+    TILT_X_N = 2,
+    //% block=Y+
+    TILT_Y_P = 3,
+    //% block=Y-
+    TILT_Y_N = 4,
+    //% block=Z+
+	TILT_Z_P = 5,
+    //% block=Z-
+    TILT_Z_N = 6,
+    //% block=Free Fall
+	FREE_FALL = 7,
+};
+
+/**
+ * 
+ */
+enum IMU_ACCEL_FSR_TYPE // accel range define
+{
+    IMU_FSR_2G = 0,
+    IMU_FSR_4G = 1,
+    IMU_FSR_8G = 2,
+    IMU_FSR_16G = 3
+};
+
+/**
+ * 
+ */
+enum IMU_ACCEL_DLPF_TYPE // accel rate define
+{
+    IMU_ACCEL_DLPF_460HZ = 0,
+    IMU_ACCEL_DLPF_184HZ = 1,
+    IMU_ACCEL_DLPF_92HZ = 2,
+    IMU_ACCEL_DLPF_41HZ = 3,
+    IMU_ACCEL_DLPF_20HZ = 4,
+    IMU_ACCEL_DLPF_10HZ = 5,
+    IMU_ACCEL_DLPF_5HZ = 6
+};
+
+/**
+ * 
+ */
+enum IMU_GYRO_FSR_TYPE // gyro range define
+{
+    IMU_FSR_250DPS = 0,
+    IMU_FSR_500DPS = 1,
+    IMU_FSR_1000DPS = 2,
+    IMU_FSR_2000DPS = 3
+};
+
+/**
+ * 
+ */
+enum IMU_GYRO_DLPF_TYPE // gyro rate define
+{
+    IMU_GYRO_DLPF_250HZ = 0,
+    IMU_GYRO_DLPF_184HZ = 1,
+    IMU_GYRO_DLPF_92HZ = 2,
+    IMU_GYRO_DLPF_41HZ = 3,
+    IMU_GYRO_DLPF_20HZ = 4,
+    IMU_GYRO_DLPF_10HZ = 5,
+    IMU_GYRO_DLPF_5HZ = 6
+};
+
+
+/**
+ * 
+ */
+enum GROVE_TWO_LIGHT {
+    DEF_I2C_ADDR = 0x05,  // The device i2c address in default
+    VID = 0x2886,         // Vender ID of the device
+    PID = 0x0005          // Product ID of the device
+}
+
+/**
+ * 
+ */
+enum GROVE_TWO_LIGHT_CMD_TYPE {
+    I2C_CMD_GET_DEV_ID = 0x00,      // This command gets device ID information
+    I2C_CMD_GET_DEV_EVENT = 0x01,   // This command gets device event status
+    I2C_CMD_GET_LIGHT = 0x02,       // This command gets light sensor value
+    I2C_CMD_SET_THD	= 0x03,         // This command sets light sensor threshold level
+    I2C_CMD_LED_ON = 0xb0,          // This command turns on the indicator LED flash mode
+    I2C_CMD_LED_OFF = 0xb1,         // This command turns off the indicator LED flash mode
+    I2C_CMD_AUTO_SLEEP_ON = 0xb2,   // This command enable device auto sleep mode
+    I2C_CMD_AUTO_SLEEP_OFF = 0xb3,  // This command disable device auto sleep mode (default mode)
+    I2C_CMD_SET_ADDR = 0xc0,        // This command sets device i2c address
+    I2C_CMD_RST_ADDR = 0xc1,        // This command resets device i2c address
+}
+
+/**
+ * 
+ */
+enum LIGHT_THD_TYPE {
+    THD_0_DEF_NUM = 50, // 
+    THD_1_DEF_NUM = 200 //
+}
+
+enum LIGHT_EVENT_TYPE // light sensor event define
+{
+    //% block=<_Threshold_0
+    LESS_THAN_THD_0 = 1,          // light intensity < threshold 0
+    //% block=>=_Threshold_0_and_<_Threshold_1
+	AMONG_THD_0_AND_THD_1 = 2,    // threshold 0 <= light intensity < threshold 1
+    //% block=>=_Threshold_1
+	MORE_THAN_THD_1 = 3           // light intensity >= threshold 1
+};
+
+
+/**
+ * 
+ */
+enum GROVE_TWO_SOUND {
+    DEF_I2C_ADDR = 0x06,  // The device i2c address in default
+    VID = 0x2886,         // Vender ID of the device
+    PID = 0x0006          // Product ID of the device
+}
+
+/**
+ * 
+ */
+enum GROVE_TWO_SOUND_CMD_TYPE {
+    I2C_CMD_GET_DEV_ID = 0x00,      // This command gets device ID information
+    I2C_CMD_GET_DEV_EVENT = 0x01,   // This command gets device event status
+    I2C_CMD_GET_SOUND = 0x02,       // This command gets sound sensor value
+    I2C_CMD_SET_THD	= 0x03,         // This command sets sound threshold level level
+    I2C_CMD_LED_ON = 0xb0,          // This command turns on the indicator LED flash mode
+    I2C_CMD_LED_OFF = 0xb1,         // This command turns off the indicator LED flash mode
+    I2C_CMD_AUTO_SLEEP_ON = 0xb2,   // This command enable device auto sleep mode
+    I2C_CMD_AUTO_SLEEP_OFF = 0xb3,  // This command disable device auto sleep mode (default mode)
+    I2C_CMD_SET_ADDR = 0xc0,        // This command sets device i2c address
+    I2C_CMD_RST_ADDR = 0xc1,        // This command resets device i2c address
+}
+
+/**
+ * 
+ */
+enum SOUND_THD_TYPE {
+    THD_0_DEF_NUM = 50, // 
+    THD_1_DEF_NUM = 200 //
+}
+
+enum SOUND_EVENT_TYPE // sound sensor event define
+{
+    //% block=<_Threshold_0
+    LESS_THAN_THD_0 = 1,          // sound intensity < threshold 0
+    //% block=>=_Threshold_0_and_<_Threshold_1
+	AMONG_THD_0_AND_THD_1 = 2,    // threshold 0 <= sound intensity < threshold 1
+    //% block=>=_Threshold_1
+	MORE_THAN_THD_1 = 3           // sound intensity >= threshold 1
+};
+
+
+/**
+ * 
+ */
+enum GROVE_TWO_TEMPERATURE {
+    DEF_I2C_ADDR = 0x03,  // The device i2c address in default
+    VID = 0x2886,         // Vender ID of the device
+    PID = 0x0003          // Product ID of the device
+}
+
+/**
+ * 
+ */
+enum GROVE_TWO_TEMPERATURE_CMD_TYPE {
+    I2C_CMD_GET_DEV_ID = 0x00,      // This command gets device ID information
+    I2C_CMD_GET_DEV_EVENT = 0x01,   // This command gets device event status
+    I2C_CMD_GET_TEMP = 0x02,        // This command gets temperature value
+    I2C_CMD_SET_THD	= 0x03,         // This command sets temperature threshold level level
+    I2C_CMD_LED_ON = 0xb0,          // This command turns on the indicator LED flash mode
+    I2C_CMD_LED_OFF = 0xb1,         // This command turns off the indicator LED flash mode
+    I2C_CMD_AUTO_SLEEP_ON = 0xb2,   // This command enable device auto sleep mode
+    I2C_CMD_AUTO_SLEEP_OFF = 0xb3,  // This command disable device auto sleep mode (default mode)
+    I2C_CMD_SET_ADDR = 0xc0,        // This command sets device i2c address
+    I2C_CMD_RST_ADDR = 0xc1,        // This command resets device i2c address
+}
+
+/**
+ * 
+ */
+enum TEMP_THD_TYPE {
+    TEMP_THD_0_DEF_NUM = 10, // 
+    TEMP_THD_1_DEF_NUM = 40 //
+}
+
+enum TEMP_EVENT_TYPE // Temperature sensor event define
+{
+    //% block=<_Threshold_0
+    LESS_THAN_THD_0 = 1,          // Temperature intensity < threshold 0
+    //% block=>=_Threshold_0_and_<_Threshold_1
+	AMONG_THD_0_AND_THD_1 = 2,    // Temperature 0 <= Temperature intensity < threshold 1
+    //% block=>=_Threshold_1
+	MORE_THAN_THD_1 = 3           // Temperature intensity >= threshold 1
+};
+
+
+/**
+ * Functions to operate Mozi module.
+ */
+//% weight=10 color=#CD5C5C icon="\uf1b3" block="Mozi"
+namespace mozi {
+    const wakePin: DigitalPin = DigitalPin.P8;
+    
+    export function wakeupDevice()
+    {
+        pins.digitalWritePin(wakePin, 0);
+        control.waitMicros(25);
+        pins.digitalWritePin(wakePin, 1);
+        control.waitMicros(25);
+    }
+    
+    export function i2cSendByte(address: number, data: number)
+    {
+        let buf: Buffer = pins.createBuffer(1);
+        buf[0] = data;
+        wakeupDevice();
+        pins.i2cWriteBuffer(address, buf, false);
+    }
+    
+    export function i2cSendBytes(address: number, data: Buffer)
+    {
+        wakeupDevice();
+        pins.i2cWriteBuffer(address, data, false);
+    }
+    
+    export function i2cReceiveByte(address: number): number
+    {
+        let buf: Buffer = pins.createBuffer(1);
+        wakeupDevice();
+        buf = pins.i2cReadBuffer(address, 1, false);
+        return buf[0];
+    }
+    
+    export function i2cReceiveBytes(address: number, len: number): Buffer
+    {
+        let buf: Buffer = pins.createBuffer(len);
+        wakeupDevice();
+        buf = pins.i2cReadBuffer(address, len, false);
+        return buf;
+    }
+
+    export class Mozi
+    {
+        currentDeviceAddress: number;
+
+        /**
+         * Get vendor ID of device.
+         */
+        //% blockId=mozi_get_device_vid block="%strip|get vid"
+        //% advanced=true
+        getDeviceVID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, 0);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get product ID of device.
+         */
+        //% blockId=mozi_get_device_pid block="%strip|get pid"
+        //% advanced=true
+        getDevicePID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, 0);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[2] + data[3] * 256);
+        }
+        
+        /**
+         * Change i2c address of device.
+         * @param newAddress the new i2c address of device, eg: 2
+         */
+        //% blockId=mozi_change_device_address block="%strip|change address to|%newAddress"
+        //% newAddress.min=2 newAddress.max=126
+        //% advanced=true
+        changeDeviceAddress(newAddress: number = 2)
+        {
+            let data: Buffer = pins.createBuffer(2);
+            data[0] = 0xc0;
+            data[1] = newAddress;
+            i2cSendBytes(this.currentDeviceAddress, data);
+            this.currentDeviceAddress = newAddress;
+        }
+        
+        /**
+         * Restore the i2c address of device to default.
+         */
+        //% blockId=mozi_default_device_address block="%strip|default address"
+        //% advanced=true
+        defaultDeviceAddress()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xc1);
+        }
+        
+        /**
+         * Trun on the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_on_device_led_flash block="%strip|turn on led flash"
+        //% advanced=true
+        turnOnLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb0);
+        }
+        
+        /**
+         * Trun off the indicator LED flash mode.
+         */
+        //% blockId=mozi_turn_off_device_led_flash block="%strip|turn off led flash"
+        //% advanced=true
+        turnOffLedFlash()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb1);
+        }
+        
+        /**
+         * Enable device auto sleep mode.
+         */
+        //% blockId=mozi_enable_device_auto_sleep block="%strip|enable auto sleep"
+        //% advanced=true
+        enableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb2);
+        }
+        
+        /**
+         * Disable device auto sleep mode.
+         */
+        //% blockId=mozi_disable_device_auto_sleep block="%strip|disable auto sleep"
+        //% advanced=true
+        disableAutoSleep()
+        {
+            i2cSendByte(this.currentDeviceAddress, 0xb3);
+        }
+    }
+    
+    let moziEventId = 8000;
+    
+    export class MoziInput extends Mozi
+    {
+        eventId: number;
+        lastStatus: number;
+        /**
+         * Get the device event status.
+         */
+        //% blockId=mozi_get_device_event_status block="%strip|get event status"
+        //% advanced=true
+        getEventStatus(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, 0x01);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return data[0];
+        }
+    }
+    
+    export class Button extends MoziInput
+    {
+        
+    }
+    
     /**
-     * Do something when a gesture is detected by Grove - Gesture
-     * @param gesture type of gesture to detect
+     * Create a new driver for button
+     * @param address the address of device, eg: 2
+     */
+    //% blockId=mozi_create_button_double block="create button and set address|%address"
+    //% address.min=2 address.max=126
+    export function createButton(address: number = 2): Button
+    {
+        let button = new Button();
+        button.currentDeviceAddress = address;
+        button.lastStatus = 0;
+        button.eventId = moziEventId;
+        moziEventId = moziEventId + 1;
+        return button;
+    }
+    
+    /**
+     * Registers code to run when a particular button is detected
+     * @param button device be specified, eg: btn
+     * @param event type of button to detect
      * @param handler code to run
      */
-    //% blockId=grove_gesture_create_event block="on Gesture|%gesture"
-    export function onGesture(gesture: GroveGesture, handler: Action) {
-        control.onEvent(gestureEventId, gesture, handler);
-        if (!paj7620) {
-            paj7620.init();
-            control.inBackground(() => {
-                while(true) {
-                    const gesture = paj7620.read();
-                    if (gesture != lastGesture) {
-                        lastGesture = gesture;
-                        control.raiseEvent(gestureEventId, lastGesture);
-                    }
-                    basic.pause(50);
+    //% blockId=mozi_button_create_event block="on button|%button|event|%event"
+    export function onButton(button: Button, event: BUTTON_EVENT_TYPE, handler: Action) {
+        control.onEvent(button.eventId, event, handler);
+        // basic.showNumber(button.eventId);
+        control.inBackground(() => {
+            while(true)
+            {
+                const buttonStatus = button.getEventStatus();
+                
+                if (buttonStatus != button.lastStatus) {
+                    button.lastStatus = buttonStatus;
+                    control.raiseEvent(button.eventId, button.lastStatus);
                 }
-            })
+                basic.pause(50);
+            }
+        })
+    }
+    
+    export class IMU extends MoziInput
+    {        
+        private numberFormat(data: number): number
+        {
+            if(data > 0x7fff)data = 0 - ((data ^ 0xffff) + 1);
+            return data;
+        }
+        
+        /**
+         * Get the accelerometer value on X-axis.
+         */
+        //% blockId=mozi_get_imu_accel_axis_x block="%strip|get accel axis x"
+        getAccelAxisX(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_X);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the accelerometer value on Y-axis.
+         */
+        //% blockId=mozi_get_imu_accel_axis_y block="%strip|get accel axis y"
+        getAccelAxisY(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_Y);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the accelerometer value on Z-axis.
+         */
+        //% blockId=mozi_get_imu_accel_axis_z block="%strip|get accel axis z"
+        getAccelAxisZ(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return this.numberFormat(data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get the accelerometer values on X, Y and Z axis.
+         */
+        //% blockId=mozi_get_imu_accel_3_axis_data block="%strip|get accel 3 axis"
+        //% advanced=true
+        getAccel3AxisData(): number[]
+        {
+            let data: Buffer = pins.createBuffer(6);
+            let accel: number[] = [0,0,0];
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_IMU_9DOF_CMD_TYPE.I2C_CMD_GET_ACCEL_X_Y_Z);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 6);           
+            accel[0] = this.numberFormat(data[0] + (data[1] * 256));
+            accel[1] = this.numberFormat(data[2] + (data[3] * 256));
+            accel[2] = this.numberFormat(data[4] + (data[5] * 256));
+            return accel;
         }
     }
     
     /**
-     * Create a new driver of Grove - Ultrasonic Sensor to measure distances in cm
-     * @param pin signal pin of ultrasonic ranger module
+     * Create a new driver for imu
+     * @param address the address of device, eg: 4
      */
-    //% blockId=grove_ultrasonic_centimeters block="Ultrasonic Sensor (in cm) at|%pin"
-    export function measureInCentimeters(pin: DigitalPin): number
+    //% blockId=mozi_create_imu block="create imu and set address|%address"
+    //% address.min=2 address.max=126
+    export function createIMU(address: number = 4): IMU
     {
-        let duration = 0;
-        let RangeInCentimeters = 0;
-        
-        pins.digitalWritePin(pin, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(pin, 1);
-        control.waitMicros(5);
-        pins.digitalWritePin(pin, 0);
-        
-        duration = pins.pulseIn(pin, PulseValue.High);
-        
-        RangeInCentimeters = duration * 153 / 29 / 2 / 100;
-        
-        return RangeInCentimeters;
+        let imu = new IMU();
+        imu.currentDeviceAddress = address;
+        imu.lastStatus = 0;
+        imu.eventId = moziEventId;
+        moziEventId = moziEventId + 1;
+        return imu;
     }
     
     /**
-     * Create a new driver Grove - Ultrasonic Sensor to measure distances in inch
-     * @param pin signal pin of ultrasonic ranger module
+     * Registers code to run when a particular imu is detected
+     * @param imu device be specified
+     * @param event type of imu to detect
+     * @param handler code to run
      */
-    //% blockId=grove_ultrasonic_inches block="Ultrasonic Sensor (in inch) at|%pin"
-    export function measureInInches(pin: DigitalPin): number
-    {
-        let duration = 0;
-        let RangeInCentimeters = 0;
-        
-        pins.digitalWritePin(pin, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(pin, 1);
-        control.waitMicros(5);
-        pins.digitalWritePin(pin, 0);
-        
-        duration = pins.pulseIn(pin, PulseValue.High);
-        
-        RangeInCentimeters = duration * 153 / 74 / 2 / 100;
-        
-        return RangeInCentimeters;
-    }
-    
-    /**
-     * Create a new driver Grove - 4-Digit Display
-     * @param clkPin value of clk pin number
-     * @param dataPin value of data pin number
-     */
-    //% blockId=grove_tm1637_create block="4-Digit Display at|%clkPin|and|%dataPin"
-    export function dislay(clkPin: DigitalPin, dataPin: DigitalPin): TM1637
-    {
-        let display = new TM1637();
-        
-        display.clkPin = clkPin;
-        display.dataPin = dataPin;
-        display.brightnessLevel = 0;
-        display.pointFlag = false;
-        
-        return display;
-    }
-    
-    /**
-     * 
-     */
-    export class PAJ7620 {
-        private paj7620WriteReg(addr: number, cmd: number) {
-            let buf: Buffer = pins.createBuffer(2);
-
-            buf[0] = addr;
-            buf[1] = cmd;
-
-            pins.i2cWriteBuffer(0x73, buf, false);
-        }
-
-        private paj7620ReadReg(addr: number): number {
-            let buf: Buffer = pins.createBuffer(1);
-
-            buf[0] = addr;
-
-            pins.i2cWriteBuffer(0x73, buf, false);
-
-            buf = pins.i2cReadBuffer(0x73, 1, false);
-
-            return buf[0];
-        }
-
-        private paj7620SelectBank(bank: number) {
-            if (bank == 0) this.paj7620WriteReg(0xEF, 0);
-            else if (bank == 1) this.paj7620WriteReg(0xEF, 1);
-        }
-
-        private paj7620Init() {
-            let temp = 0;
-
-            this.paj7620SelectBank(0);
-
-            temp = this.paj7620ReadReg(0);
-            if (temp == 0x20) {
-                for (let i = 0; i < 438; i += 2) {
-                    this.paj7620WriteReg(initRegisterArray[i], initRegisterArray[i + 1]);
+    //% blockId=mozi_imu_create_event block="on imu|%imu|event|%event"
+    export function onIMU(imu: IMU, event: IMU_EVENT_TYPE, handler: Action) {
+        control.onEvent(imu.eventId, event, handler);
+        // basic.showNumber(imu.eventId);
+        control.inBackground(() => {
+            while(true)
+            {
+                const buttonStatus = imu.getEventStatus();
+                
+                if (buttonStatus != imu.lastStatus) {
+                    imu.lastStatus = buttonStatus;
+                    control.raiseEvent(imu.eventId, imu.lastStatus);
                 }
+                basic.pause(50);
             }
+        })
+    }
 
-            this.paj7620SelectBank(0);
-        }
-
+    
+    export class Light extends MoziInput
+    {        
         /**
-         * Create a new driver of Grove - Gesture
+         * Get the light sensor value.
          */
-        //% blockId=grove_gesture_init block="%strip|initiate the Grove - Gesture"
-        //% advanced=true
-        init() {
-            this.paj7620Init();
-            basic.pause(200);
+        //% blockId=mozi_get_light_lux block="%strip|get light lux"
+        getLightLux(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_GET_LIGHT);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
         }
-
+        
         /**
-         * Detect and recognize the gestures from Grove - Gesture
+         * Set the light threshold level 0.
+         * @param value the value of light threshold level 0, eg: 50
          */
-        //% blockId=grove_gesture_read block="%strip|get gesture"
+        //% blockId=mozi_set_light_threshold_0 block="%strip|set light threshold 0|%value"
         //% advanced=true
-        read(): number {
-            let data = 0, result = 0;
-
-            data = this.paj7620ReadReg(0x43);
-            switch (data) {
-                case 0x01:
-                    result = GroveGesture.Right;
-                break;
-
-                case 0x02:
-                    result = GroveGesture.Left;
-                break;
-
-                case 0x04:
-                    result = GroveGesture.Up;
-                break;
-
-                case 0x08:
-                    result = GroveGesture.Down;
-                break;
-
-                case 0x10:
-                    result = GroveGesture.Forward;
-                break;
-
-                case 0x20:
-                    result = GroveGesture.Backward;
-                break;
-
-                case 0x40:
-                    result = GroveGesture.Clockwise;
-                break;
-
-                case 0x80:
-                    result = GroveGesture.Anticlockwise;
-                break;
-
-                default:
-                    data = this.paj7620ReadReg(0x44);
-                    if (data == 0x01)
-                        result = GroveGesture.Wave;
-                break;
-            }
-
-            return result;
+        setThreshold0(value: number = 50)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 0;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the light threshold level 1.
+         * @param value the value of light threshold level 1, eg: 200
+         */
+        //% blockId=mozi_set_light_threshold_1 block="%strip|set light threshold 1|%value"
+        //% advanced=true
+        setThreshold1(value: number = 200)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_LIGHT_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 1;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
         }
     }
     
     /**
-     * 
+     * Create a new driver for light
+     * @param address the address of device, eg: 5
      */
-    export class TM1637
+    //% blockId=mozi_create_light block="create light and set address|%address"
+    //% address.min=2 address.max=126
+    export function createLight(address: number = 5): Light
     {
-        clkPin: DigitalPin;
-        dataPin: DigitalPin;
-        brightnessLevel: number;     
-        pointFlag: boolean;
+        let light = new Light();
+        light.currentDeviceAddress = address;
+        button.lastStatus = 0;
+        button.eventId = moziEventId;
+        moziEventId = moziEventId + 1;
+        return light;
+    }
+    
+    /**
+     * Registers code to run when a particular light is detected
+     * @param light device be specified
+     * @param event type of imu to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_light_create_event block="on light|%light|event|%event"
+    export function onLight(light: Light, event: LIGHT_EVENT_TYPE, handler: Action) {
+        control.onEvent(light.eventId, event, handler);
+        // basic.showNumber(light.eventId);
+        control.inBackground(() => {
+            while(true)
+            {
+                const buttonStatus = light.getEventStatus();
+                
+                if (buttonStatus != light.lastStatus) {
+                    light.lastStatus = buttonStatus;
+                    control.raiseEvent(light.eventId, light.lastStatus);
+                }
+                basic.pause(50);
+            }
+        })
+    }
 
-        private writeByte(wrData: number) 
+    
+    export class Sound extends MoziInput
+    {        
+        /**
+         * Get the sound sensor value.
+         */
+        //% blockId=mozi_get_sound_value block="%strip|get sound value"
+        getSoundValue(): number
         {
-            for(let i = 0; i < 8; i ++)
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_GET_SOUND);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Set the sound threshold level 0.
+         * @param value the value of sound threshold level 0, eg: 50
+         */
+        //% blockId=mozi_set_sound_threshold_0 block="%strip|set sound threshold 0|%value"
+        //% advanced=true
+        setThreshold0(value: number = 50)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 0;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Set the sound threshold level 1.
+         * @param value the value of sound threshold level 1, eg: 200
+         */
+        //% blockId=mozi_set_sound_threshold_1 block="%strip|set sound threshold 1|%value"
+        //% advanced=true
+        setThreshold1(value: number = 200)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_SOUND_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 1;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+    }
+    
+    /**
+     * Create a new driver for sound
+     * @param address the address of device, eg: 6
+     */
+    //% blockId=mozi_create_sound block="create sound and set address|%address"
+    //% address.min=2 address.max=126
+    export function createSound(address: number = 6): Sound
+    {
+        let sound = new Sound();
+        sound.currentDeviceAddress = address;
+        button.lastStatus = 0;
+        button.eventId = moziEventId;
+        moziEventId = moziEventId + 1;
+        return sound;
+    }
+    
+    /**
+     * Registers code to run when a particular sound is detected
+     * @param sound device be specified
+     * @param event type of sound to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_sound_create_event block="on sound|%sound|event|%event"
+    export function onSound(sound: Sound, event: SOUND_EVENT_TYPE, handler: Action) {
+        control.onEvent(sound.eventId, event, handler);
+        // basic.showNumber(sound.eventId);
+        control.inBackground(() => {
+            while(true)
             {
-                pins.digitalWritePin(this.clkPin, 0);
-                if(wrData & 0x01)pins.digitalWritePin(this.dataPin, 1);
-                else pins.digitalWritePin(this.dataPin, 0);
-                wrData >>= 1;
-                pins.digitalWritePin(this.clkPin, 1);
+                const buttonStatus = sound.getEventStatus();
+                
+                if (buttonStatus != sound.lastStatus) {
+                    sound.lastStatus = buttonStatus;
+                    control.raiseEvent(sound.eventId, sound.lastStatus);
+                }
+                basic.pause(50);
             }
-            
-            pins.digitalWritePin(this.clkPin, 0); // Wait for ACK
-            pins.digitalWritePin(this.dataPin, 1);
-            pins.digitalWritePin(this.clkPin, 1);
-        }
-        
-        private start()
-        {
-            pins.digitalWritePin(this.clkPin, 1);
-            pins.digitalWritePin(this.dataPin, 1);
-            pins.digitalWritePin(this.dataPin, 0);
-            pins.digitalWritePin(this.clkPin, 0);
-        }
-        
-        private stop()
-        {
-            pins.digitalWritePin(this.clkPin, 0);
-            pins.digitalWritePin(this.dataPin, 0);
-            pins.digitalWritePin(this.clkPin, 1);
-            pins.digitalWritePin(this.dataPin, 1);
-        }
-        
-        private coding(dispData: number): number
-        {
-            let pointData = 0;
-            
-            if(this.pointFlag == true)pointData = 0x80;
-            else if(this.pointFlag == false)pointData = 0;
-            
-            if(dispData == 0x7f)dispData = 0x00 + pointData;
-            else dispData = TubeTab[dispData] + pointData;
-            
-            return dispData;
-        } 
+        })
+    }
 
+    
+    export class Temperature extends MoziInput
+    {       
         /**
-         * Show a 4 digits number on display
-         * @param dispData value of number
+         * Get the temperature value.
          */
-        //% blockId=grove_tm1637_display_number block="%strip|show number|%dispData"
-        show(dispData: number)
-        {       
-            if(dispData < 10)
-            {
-                this.bit(3, dispData);
-                this.bit(2, 0x7f);
-                this.bit(1, 0x7f);
-                this.bit(0, 0x7f);
-            }
-            else if(dispData < 100)
-            {
-                this.bit(3, dispData % 10);
-                this.bit(2, (dispData / 10) % 10);
-                this.bit(1, 0x7f);
-                this.bit(0, 0x7f);
-            }
-            else if(dispData < 1000)
-            {
-                this.bit(3, dispData % 10);
-                this.bit(2, (dispData / 10) % 10);
-                this.bit(1, (dispData / 100) % 10);
-                this.bit(0, 0x7f);
-            }
-            else
-            {
-                this.bit(3, dispData % 10);
-                this.bit(2, (dispData / 10) % 10);
-                this.bit(1, (dispData / 100) % 10);
-                this.bit(0, (dispData / 1000) % 10);
-            }
-        }
-        
-        /**
-         * Set the brightness level of display at from 0 to 7
-         * @param level value of brightness level
-         */
-        //% blockId=grove_tm1637_set_display_level block="%strip|brightness level to|%level"
-        //% level.min=0 level.max=7
-        set(level: number)
+        //% blockId=mozi_get_temperature_value block="%strip|get temperature value"
+        getTemperatureValue(): number
         {
-            this.brightnessLevel = level;
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_GET_TEMP);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
         }
         
         /**
-         * Show a single number from 0 to 9 at a specified digit of Grove - 4-Digit Display
-         * @param dispData value of number
-         * @param bitAddr value of bit number
+         * Set the temperature threshold level 0.
+         * @param value the value of temperature threshold level 0, eg: 10
          */
-        //% blockId=grove_tm1637_display_bit block="%strip|show single number|%dispData|at digit|%bitAddr"
-        //% dispData.min=0 dispData.max=9
-        //% bitAddr.min=0 bitAddr.max=3
+        //% blockId=mozi_set_temperature_threshold_0 block="%strip|set temperature threshold 0|%value"
         //% advanced=true
-        bit(dispData: number, bitAddr: number)
+        setThreshold0(value: number = 10)
         {
-            let segData = 0;
-            segData = this.coding(dispData);
-            this.start();
-            this.writeByte(0x44);
-            this.stop();
-            this.start();
-            this.writeByte(bitAddr | 0xc0);
-            this.writeByte(segData);
-            this.stop();
-            this.start();
-            this.writeByte(0x88 + this.brightnessLevel);
-            this.stop();
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 0;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
         }
         
         /**
-         * Turn on or off the colon point on Grove - 4-Digit Display
-         * @param pointEn value of point switch
+         * Set the temperature threshold level 1.
+         * @param value the value of temperature threshold level 1, eg: 40
          */
-        //% blockId=grove_tm1637_display_point block="%strip|turn|%point|colon point"
+        //% blockId=mozi_set_temperature_threshold_1 block="%strip|set temperature threshold 1|%value"
         //% advanced=true
-        point(point: boolean)
+        setThreshold1(value: number = 40)
         {
-            this.pointFlag = point;
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_TEMPERATURE_CMD_TYPE.I2C_CMD_SET_THD;
+            data[1] = 1;
+            data[2] = value & 0xff;
+            data[3] = value >> 8;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+    }
+    
+    /**
+     * Create a new driver for temperature
+     * @param address the address of device, eg: 3
+     */
+    //% blockId=mozi_create_temperature block="create temperature and set address|%address"
+    export function createTemperature(address: number = 3): Temperature
+    {
+        let temperature = new Temperature();
+        temperature.currentDeviceAddress = address;
+        button.lastStatus = 0;
+        button.eventId = moziEventId;
+        moziEventId = moziEventId + 1;
+        return temperature;
+    }
+    
+    /**
+     * Registers code to run when a particular temperature is detected
+     * @param temperature device be specified
+     * @param event type of temperature to detect
+     * @param handler code to run
+     */
+    //% blockId=mozi_temperature_create_event block="on temperature|%temperature|event|%event"
+    export function onTemperature(temperature: Temperature, event: TEMP_EVENT_TYPE, handler: Action) {
+        control.onEvent(temperature.eventId, event, handler);
+        // basic.showNumber(temperature.eventId);
+        control.inBackground(() => {
+            while(true)
+            {
+                const buttonStatus = temperature.getEventStatus();
+                
+                if (buttonStatus != temperature.lastStatus) {
+                    temperature.lastStatus = buttonStatus;
+                    control.raiseEvent(temperature.eventId, temperature.lastStatus);
+                }
+                basic.pause(50);
+            }
+        })
+    }
+
+    export class Matrix extends Mozi
+    {
+        /**
+         * Display the LED bar mode on LED matrix.
+         * @param bar set the Bar level you want to display from 0 to 18, eg: 0
+         * @param time set the display time duration set it to 0 to display forever, eg: 1000
+         */
+        //% blockId=mozi_matrix_dispaly_bar block="%strip|matrix display bar|%bar|time|%time|ms"
+        //% bar.min=0 bar.max=18
+        displayBar(bar: number = 0, time: number = 1000)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_BAR;
+            data[1] = bar;
+            data[2] = time & 0xff;
+            data[3] = (time >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
         }
         
         /**
-         * Clear the display
+         * Display emoji mode on LED matrix.
+         * @param emoji set a number from 0 to 4 for different emoji. 0 is dull, 1 is mad, 2 is sad, 3 is smile, 4 is surprise.
+         * @param time set the display time duration set it to 0 to display forever, eg: 1000
          */
-        //% blockId=grove_tm1637_display_clear block="%strip|clear"
-        //% advanced=true
-        clear()
+        //% blockId=mozi_matrix_dispaly_emoji block="%strip|matrix display emoji|%emoji|time|%time|ms"
+        displayEmoji(emoji: EMOJI_TYPE, time: number = 1000)
         {
-            this.bit(0x00, 0x7f);
-            this.bit(0x01, 0x7f);
-            this.bit(0x02, 0x7f);
-            this.bit(0x03, 0x7f);
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_EMOJI;
+            data[1] = emoji;
+            data[2] = time & 0xff;
+            data[3] = (time >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
         }
+        
+        /**
+         * Display number mode on LED matrix.
+         * @param num set the number you want to display on LED matrix. Long numbers will roll on it, the shorter you set the time duration, the faster it rolls, eg: 0
+         * @param time set the display time duration, set it to 0 to display forever, eg: 1000
+         */
+        //% blockId=mozi_matrix_dispaly_number block="%strip|matrix display number|%num|time|%time|ms"
+        displayNumber(num: number = 0, time: number = 1000)
+        {
+            let data: Buffer = pins.createBuffer(5);
+            data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_NUM;
+            data[1] = num & 0xff;
+            data[2] = (num >> 8) & 0xff;
+            data[3] = time & 0xff;
+            data[4] = (time >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Display string mode on LED matrix.
+         * @param str the string pointer, the maximum number is 28 bytes, eg: hello
+         * @param time set the display time duration, eg: 1000
+         * @param flag false: auto display off; true: always display.
+         */
+        //% blockId=mozi_matrix_dispaly_string block="%strip|matrix display string|%str|time|%time|ms, always|%flag"
+        displayStrings(str: string = "hello", time: number = 1000, flag: boolean = false)
+        {
+            let len: number = str.length;
+            if(len >= 28)len = 28;
+            let data: Buffer = pins.createBuffer(len + 4);
+            for(let i = 0; i < len; i ++)data[i + 4] = str.charCodeAt(i);
+            data[0] = GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_STR;
+            data[1] = <number><any>flag;
+            data[2] = time & 0xff;
+            data[3] = (time >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Display nothing on LED Matrix.
+         */
+        //% blockId=mozi_matrix_dispaly_stop block="%strip|matrix display stop"
+        //% advanced=true
+        stopDisplay()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_LED_MATRIX_CMD_TYPE.I2C_CMD_DISP_OFF);
+        }
+    }
+    
+    /**
+     * Create a new driver for matrix
+     * @param address the address of device, eg: 7
+     */
+    //% blockId=mozi_create_led_matrix block="create matrix and set address|%address"
+    //% address.min=2 address.max=126
+    export function createMatrix(address: number = 7): Matrix
+    {
+        let matrix = new Matrix();
+        matrix.currentDeviceAddress = address;
+        return matrix;
+    }
+    
+    
+    export class Buzzer extends Mozi
+    {
+        /**
+         * Play a tone for a given beat.
+         * @param gamut the tone needed to play.
+         * @param beat set the beat as 1, 2, 4, 8, 1/2, 1/4, 1/8 or 1/16.
+         */
+        //% blockId=mozi_buzzer_play_tone block="%strip|buzzer play tone|%gamut|in|%beat|beats"
+        playTone(gamut: GAMUT_TYPE, beat: BEAT_TYPE)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_PLAY_TONE;
+            data[1] = gamut;
+            data[2] = beat;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Play a tone for a given time duration.
+         * @param gamut the tone needed to play.
+         * @param time set the time duration, unit ms.
+         */
+        //% blockId=mozi_buzzer_ring_tone block="%strip|buzzer ring tone|%gamut|in|%time|ms"
+        ringTone(gamut: GAMUT_TYPE, time: number)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_RING_TONE;
+            data[1] = gamut;
+            data[2] = time & 0xff;
+            data[3] = (time >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Stop playing anything.
+         */
+        //% blockId=mozi_buzzer_stop_play block="%strip|buzzer stop play"
+        //% advanced=true
+        stopPlay()
+        {
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_PLAY_STOP);
+        }
+        
+        /**
+         * Set tempo to a given beats per minute.
+         * @param bpm beats Per Minute, eg: 120
+         */
+        //% blockId=mozi_buzzer_set_tempo_to block="%strip|set buzzer tempo to|%bpm|bpm"
+        //% advanced=true
+        setTempoTo(bpm: number = 120)
+        {
+            let data: Buffer = pins.createBuffer(3);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_SET_BPM;
+            data[1] = bpm & 0xff;
+            data[2] = (bpm >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Change tempo by a given beats per minute.
+         * @param bpm increase tempo by +bpm, or decrease tempo by -bpm.
+         */
+        //% blockId=mozi_buzzer_change_tempo_by block="%strip|change buzzer tempo by|%bpm|bpm"
+        //% advanced=true
+        changeTempoBy(bpm: number)
+        {
+            let data: Buffer = pins.createBuffer(4);
+            data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_CHG_BPM;
+            if(bpm >= 0)data[1] = 1;
+            else 
+            {
+                data[1] = 0;
+                bpm = bpm * (-1);
+            }
+            data[2] = bpm & 0xff;
+            data[3] = (bpm >> 8) & 0xff;
+            i2cSendBytes(this.currentDeviceAddress, data);
+        }
+        
+        /**
+         * Get the current tempo as beats per minute.
+         */
+        //% blockId=mozi_get_buzzer_tempo_to block="%strip|get buzzer tempo"
+        //% advanced=true
+        getTempoTo(): number
+        {
+            let data: Buffer = pins.createBuffer(2);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_GET_BPM);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 2);
+            return (data[0] + data[1] * 256);
+        }
+    }
+    
+    /**
+     * Create a new driver for buzzer
+     * @param address the address of device, eg: 8
+     */
+    //% blockId=mozi_create_buzzer block="create buzzer and set address|%address"
+    //% address.min=2 address.max=126
+    export function createBuzzer(address: number = 8): Buzzer
+    {
+        let buzzer = new Buzzer();
+        buzzer.currentDeviceAddress = address;
+        return buzzer;
     }
 }
