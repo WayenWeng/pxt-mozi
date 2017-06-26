@@ -1146,10 +1146,10 @@ namespace mozi {
         /**
          * Play a tone for a given time duration.
          * @param gamut the tone needed to play.
-         * @param time set the time duration, unit ms.
+         * @param time set the time duration, unit ms, eg: 1000
          */
         //% blockId=mozi_buzzer_ring_tone block="%strip|buzzer ring tone|%gamut|in|%time|ms"
-        ringTone(gamut: GAMUT_TYPE, time: number)
+        ringTone(gamut: GAMUT_TYPE, time: number = 1000)
         {
             let data: Buffer = pins.createBuffer(4);
             data[0] = GROVE_TWO_BUZZER_CMD_TYPE.I2C_CMD_RING_TONE;
