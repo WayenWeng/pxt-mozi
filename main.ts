@@ -142,10 +142,39 @@ namespace mozi {
     
     let moziEventId = 8000;
 
-    
-    export class Button
+    export class Mozi
     {
         currentDeviceAddress: number;
+
+        /**
+         * Get vendor ID of device.
+         */
+        //% blockId=mozi_get_device_vid block="%strip|get vid"
+        //% advanced=true
+        getDeviceVID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[0] + data[1] * 256);
+        }
+        
+        /**
+         * Get product ID of device.
+         */
+        //% blockId=mozi_get_device_pid block="%strip|get pid"
+        //% advanced=true
+        getDevicePID(): number
+        {
+            let data: Buffer = pins.createBuffer(4);
+            i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
+            data = i2cReceiveBytes(this.currentDeviceAddress, 4);
+            return (data[2] + data[3] * 256);
+        }
+    }
+    
+    export class Button extends Mozi
+    {
         lastStatus: BUTTON_EVENT_TYPE;
         eventId: number;
         
@@ -203,7 +232,7 @@ namespace mozi {
         }
     }
 
-    export class Matrix
+    export class Matrix extends Mozi
     {
         currentDeviceAddress: number;
 
@@ -299,31 +328,5 @@ namespace mozi {
         let matrix = new Matrix();
         matrix.currentDeviceAddress = address;
         return matrix;
-    }
-    
-    /**
-     * Get vendor ID of device.
-     */
-    //% blockId=mozi_get_button_vid block="%device|get vid"
-    //% advanced=true
-    export function getDeviceVID(device: any): number
-    {
-        let data: Buffer = pins.createBuffer(4);
-        i2cSendByte(device.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-        data = i2cReceiveBytes(device.currentDeviceAddress, 4);
-        return (data[0] + data[1] * 256);
-    }
-    
-    /**
-     * Get product ID of device.
-     */
-    //% blockId=mozi_get_button_pid block="%device|get pid"
-    //% advanced=true
-    export function getDevicePID(device: any): number
-    {
-        let data: Buffer = pins.createBuffer(4);
-        i2cSendByte(device.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_ID);
-        data = i2cReceiveBytes(device.currentDeviceAddress, 4);
-        return (data[2] + data[3] * 256);
     }
 }
