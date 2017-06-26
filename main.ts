@@ -591,9 +591,6 @@ namespace mozi {
     
     export class MoziInput extends Mozi
     {
-        lastStatus: number;
-        eventId: number;
-        
         /**
          * Get the device event status.
          */
@@ -610,7 +607,8 @@ namespace mozi {
     
     export class Button extends MoziInput
     {
-        
+        lastStatus: number;
+        eventId: number;
     }
     
     /**
@@ -655,7 +653,10 @@ namespace mozi {
     }
     
     export class IMU extends MoziInput
-    {        
+    {
+        lastStatus: number;
+        eventId: number;
+        
         private numberFormat(data: number): number
         {
             if(data > 0x7fff)data = 0 - ((data ^ 0xffff) + 1);
@@ -758,7 +759,10 @@ namespace mozi {
 
     
     export class Light extends MoziInput
-    {        
+    {
+        lastStatus: number;
+        eventId: number;
+        
         /**
          * Get the light sensor value.
          */
@@ -846,7 +850,10 @@ namespace mozi {
 
     
     export class Sound extends MoziInput
-    {       
+    {
+        lastStatus: number;
+        eventId: number;
+        
         /**
          * Get the sound sensor value.
          */
@@ -935,6 +942,9 @@ namespace mozi {
     
     export class Temperature extends MoziInput
     {
+        lastStatus: number;
+        eventId: number;
+        
         /**
          * Get the temperature value.
          */
