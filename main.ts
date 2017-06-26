@@ -588,11 +588,10 @@ namespace mozi {
     }
     
     let moziEventId = 8000;
+    let addrBuffer: Buffer = pins.createBuffer(128);
     
     export class MoziInput extends Mozi
     {
-        eventId: number;
-        lastStatus: number;
         /**
          * Get the device event status.
          */
@@ -605,6 +604,14 @@ namespace mozi {
             data = i2cReceiveBytes(this.currentDeviceAddress, 4);
             return data[0];
         }
+    }
+    
+    export function getEventStatus(currentDeviceAddress: number): number
+    {
+        let data: Buffer = pins.createBuffer(4);
+        i2cSendByte(currentDeviceAddress, 0x01);
+        data = i2cReceiveBytes(currentDeviceAddress, 4);
+        return data[0];
     }
     
     export class Button extends MoziInput
@@ -622,33 +629,32 @@ namespace mozi {
     {
         let button = new Button();
         button.currentDeviceAddress = address;
-        button.lastStatus = 0;
-        button.eventId = 0;
         return button;
     }
     
     /**
      * Registers code to run when a particular button is detected
-     * @param button device be specified, eg: btn
+     * @param address device be specified, eg: 2
      * @param event type of button to detect
      * @param handler code to run
      */
-    //% blockId=mozi_button_create_event block="on button|%button|event|%event"
-    export function onButton(button: Button, event: BUTTON_EVENT_TYPE, handler: Action) {
-        if(button.eventId == 0)button.eventId = moziEventId + button.currentDeviceAddress;
-        control.onEvent(button.eventId, event, handler);
-        control.inBackground(() => {
-            while(true)
-            {
-                const buttonStatus = button.getEventStatus();
-                
-                if (buttonStatus != button.lastStatus) {
-                    button.lastStatus = buttonStatus;
-                    control.raiseEvent(button.eventId, button.lastStatus);
+    //% blockId=mozi_button_create_event block="on button|%address|event|%event"
+    //% address.min=2 address.max=126
+    export function onButton(address: number = 4, event: BUTTON_EVENT_TYPE, handler: Action) {
+        if(address < 128) { 
+            let eventId = 0;
+            if(addrBuffer[address] == 0)eventId = moziEventId + address;
+            else eventId = addrBuffer[address];
+            control.onEvent(eventId, event, handler);
+            control.inBackground(() => {
+                while(true) {
+                    const newStatus = getEventStatus(address);
+                    if (newStatus == event)
+                        control.raiseEvent(eventId, event);
+                    basic.pause(50);
                 }
-                basic.pause(50);
-            }
-        })
+            })
+        }
     }
     
     export class IMU extends MoziInput
@@ -723,33 +729,32 @@ namespace mozi {
     {
         let imu = new IMU();
         imu.currentDeviceAddress = address;
-        imu.lastStatus = 0;
-        imu.eventId = 0;
         return imu;
     }
     
     /**
      * Registers code to run when a particular imu is detected
-     * @param imu device be specified
+     * @param address device be specified, eg: 4
      * @param event type of imu to detect
      * @param handler code to run
      */
-    //% blockId=mozi_imu_create_event block="on imu|%imu|event|%event"
-    export function onIMU(imu: IMU, event: IMU_EVENT_TYPE, handler: Action) {
-        if(imu.eventId == 0)imu.eventId = moziEventId + imu.currentDeviceAddress;
-        control.onEvent(imu.eventId, event, handler);
-        control.inBackground(() => {
-            while(true)
-            {
-                const buttonStatus = imu.getEventStatus();
-                
-                if (buttonStatus != imu.lastStatus) {
-                    imu.lastStatus = buttonStatus;
-                    control.raiseEvent(imu.eventId, imu.lastStatus);
+    //% blockId=mozi_imu_create_event block="on imu|%address|event|%event"
+    //% address.min=2 address.max=126
+    export function onIMU(address: number = 2, event: IMU_EVENT_TYPE, handler: Action) {
+        if(address < 128) { 
+            let eventId = 0;
+            if(addrBuffer[address] == 0)eventId = moziEventId + address;
+            else eventId = addrBuffer[address];
+            control.onEvent(eventId, event, handler);
+            control.inBackground(() => {
+                while(true) {
+                    const newStatus = getEventStatus(address);
+                    if (newStatus == event)
+                        control.raiseEvent(eventId, event);
+                    basic.pause(50);
                 }
-                basic.pause(50);
-            }
-        })
+            })
+        }
     }
 
     
@@ -810,33 +815,32 @@ namespace mozi {
     {
         let light = new Light();
         light.currentDeviceAddress = address;
-        button.lastStatus = 0;
-        button.eventId = moziEventId;
-        moziEventId = moziEventId + 1;
         return light;
     }
     
     /**
      * Registers code to run when a particular light is detected
-     * @param light device be specified
+     * @param address device be specified, eg: 5
      * @param event type of imu to detect
      * @param handler code to run
      */
-    //% blockId=mozi_light_create_event block="on light|%light|event|%event"
-    export function onLight(light: Light, event: LIGHT_EVENT_TYPE, handler: Action) {
-        control.onEvent(light.eventId, event, handler);
-        control.inBackground(() => {
-            while(true)
-            {
-                const buttonStatus = light.getEventStatus();
-                
-                if (buttonStatus != light.lastStatus) {
-                    light.lastStatus = buttonStatus;
-                    control.raiseEvent(light.eventId, light.lastStatus);
+    //% blockId=mozi_light_create_event block="on light|%address|event|%event"
+    //% address.min=2 address.max=126
+    export function onLight(address: number = 5, event: LIGHT_EVENT_TYPE, handler: Action) {
+        if(address < 128) {
+            let eventId = 0;
+            if(addrBuffer[address] == 0)eventId = moziEventId + address;
+            else eventId = addrBuffer[address];
+            control.onEvent(eventId, event, handler);
+            control.inBackground(() => {
+                while(true) {
+                    const newStatus = getEventStatus(address);
+                    if (newStatus == event)
+                        control.raiseEvent(eventId, event);
+                    basic.pause(50);
                 }
-                basic.pause(50);
-            }
-        })
+            })
+        }
     }
 
     
@@ -897,33 +901,32 @@ namespace mozi {
     {
         let sound = new Sound();
         sound.currentDeviceAddress = address;
-        button.lastStatus = 0;
-        button.eventId = moziEventId;
-        moziEventId = moziEventId + 1;
         return sound;
     }
     
     /**
      * Registers code to run when a particular sound is detected
-     * @param sound device be specified
+     * @param address device be specified, eg: 6
      * @param event type of sound to detect
      * @param handler code to run
      */
-    //% blockId=mozi_sound_create_event block="on sound|%sound|event|%event"
-    export function onSound(sound: Sound, event: SOUND_EVENT_TYPE, handler: Action) {
-        control.onEvent(sound.eventId, event, handler);
-        control.inBackground(() => {
-            while(true)
-            {
-                const buttonStatus = sound.getEventStatus();
-                
-                if (buttonStatus != sound.lastStatus) {
-                    sound.lastStatus = buttonStatus;
-                    control.raiseEvent(sound.eventId, sound.lastStatus);
+    //% blockId=mozi_sound_create_event block="on sound|%address|event|%event"
+    //% address.min=2 address.max=126
+    export function onSound(address: number = 6, event: SOUND_EVENT_TYPE, handler: Action) {
+        if(address < 128) {
+            let eventId = 0;
+            if(addrBuffer[address] == 0)eventId = moziEventId + address;
+            else eventId = addrBuffer[address];
+            control.onEvent(eventId, event, handler);
+            control.inBackground(() => {
+                while(true) {
+                    const newStatus = getEventStatus(address);
+                    if (newStatus == event)
+                        control.raiseEvent(eventId, event);
+                    basic.pause(50);
                 }
-                basic.pause(50);
-            }
-        })
+            })
+        }
     }
 
     
@@ -979,37 +982,37 @@ namespace mozi {
      * @param address the address of device, eg: 3
      */
     //% blockId=mozi_create_temperature block="create temperature and set address|%address"
+    //% address.min=2 address.max=126
     export function createTemperature(address: number = 3): Temperature
     {
         let temperature = new Temperature();
         temperature.currentDeviceAddress = address;
-        button.lastStatus = 0;
-        button.eventId = moziEventId;
-        moziEventId = moziEventId + 1;
         return temperature;
     }
     
     /**
      * Registers code to run when a particular temperature is detected
-     * @param temperature device be specified
+     * @param address device be specified, eg: 3
      * @param event type of temperature to detect
      * @param handler code to run
      */
-    //% blockId=mozi_temperature_create_event block="on temperature|%temperature|event|%event"
-    export function onTemperature(temperature: Temperature, event: TEMP_EVENT_TYPE, handler: Action) {
-        control.onEvent(temperature.eventId, event, handler);
-        control.inBackground(() => {
-            while(true)
-            {
-                const buttonStatus = temperature.getEventStatus();
-                
-                if (buttonStatus != temperature.lastStatus) {
-                    temperature.lastStatus = buttonStatus;
-                    control.raiseEvent(temperature.eventId, temperature.lastStatus);
+    //% blockId=mozi_temperature_create_event block="on temperature|%address|event|%event"
+    //% address.min=2 address.max=126
+    export function onTemperature(address: number = 3, event: TEMP_EVENT_TYPE, handler: Action) {
+        if(address < 128) {
+            let eventId = 0;
+            if(addrBuffer[address] == 0)eventId = moziEventId + address;
+            else eventId = addrBuffer[address];
+            control.onEvent(eventId, event, handler);
+            control.inBackground(() => {
+                while(true) {
+                    const newStatus = getEventStatus(address);
+                    if (newStatus == event)
+                        control.raiseEvent(eventId, event);
+                    basic.pause(50);
                 }
-                basic.pause(50);
-            }
-        })
+            })
+        }
     }
 
     export class Matrix extends Mozi
