@@ -245,9 +245,9 @@ namespace mozi {
         eventId: number;
         
         /**
-         * Get the button event status.
+         * Get the device event status.
          */
-        //% blockId=mozi_get_button_event_status block="%strip|get button event status"
+        //% blockId=mozi_get_device_event_status block="%strip|get event status"
         //% advanced=true
         getEventStatus(): number
         {
@@ -260,7 +260,7 @@ namespace mozi {
     
     export class Button extends MoziInput
     {
-
+        
     }
     
     /**
