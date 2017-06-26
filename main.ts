@@ -639,6 +639,7 @@ namespace mozi {
      */
     //% blockId=mozi_button_create_event block="on button|%button|event|%event"
     export function onButton(button: Button = btn, event: BUTTON_EVENT_TYPE, handler: Action) {
+        button.eventId = moziEventId;
         control.onEvent(button.eventId, event, handler);
         // if (!button) 
         {
