@@ -629,16 +629,18 @@ namespace mozi {
         return button;
     }
     
+    let btn = mozi.createButton(GROVE_TWO_DOUBLE_BUTTON.DEF_I2C_ADDR);
+    
     /**
      * Registers code to run when a particular button is detected
-     * @param button device be specified
+     * @param button device be specified, eg: btn
      * @param event type of button to detect
      * @param handler code to run
      */
     //% blockId=mozi_button_create_event block="on button|%button|event|%event"
-    export function onButton(button: Button = undefined, event: BUTTON_EVENT_TYPE, handler: Action) {
+    export function onButton(button: Button = btn, event: BUTTON_EVENT_TYPE, handler: Action) {
         control.onEvent(button.eventId, event, handler);
-        // if (button != undefined) 
+        // if (!button) 
         {
             basic.showNumber(button.eventId);
             control.inBackground(() => {
