@@ -629,8 +629,6 @@ namespace mozi {
         return button;
     }
     
-    let btn = mozi.createButton(GROVE_TWO_DOUBLE_BUTTON.DEF_I2C_ADDR);
-    
     /**
      * Registers code to run when a particular button is detected
      * @param button device be specified, eg: btn
@@ -638,7 +636,7 @@ namespace mozi {
      * @param handler code to run
      */
     //% blockId=mozi_button_create_event block="on button|%button|event|%event"
-    export function onButton(button: Button = btn, event: BUTTON_EVENT_TYPE, handler: Action) {
+    export function onButton(button: Button, event: BUTTON_EVENT_TYPE, handler: Action) {
         button.eventId = moziEventId;
         control.onEvent(button.eventId, event, handler);
         // if (!button) 
@@ -745,7 +743,9 @@ namespace mozi {
     //% blockId=mozi_imu_create_event block="on imu|%imu|event|%event"
     export function onIMU(imu: IMU, event: IMU_EVENT_TYPE, handler: Action) {
         control.onEvent(imu.eventId, event, handler);
-        if (!imu) {
+        // if (!imu) 
+        {
+            basic.showNumber(imu.eventId);
             control.inBackground(() => {
                 while(true)
                 {
@@ -833,7 +833,9 @@ namespace mozi {
     //% blockId=mozi_light_create_event block="on light|%light|event|%event"
     export function onLight(light: Light, event: LIGHT_EVENT_TYPE, handler: Action) {
         control.onEvent(light.eventId, event, handler);
-        if (!light) {
+        // if (!light) 
+        {
+            basic.showNumber(light.eventId);
             control.inBackground(() => {
                 while(true)
                 {
@@ -921,7 +923,9 @@ namespace mozi {
     //% blockId=mozi_sound_create_event block="on sound|%sound|event|%event"
     export function onSound(sound: Sound, event: SOUND_EVENT_TYPE, handler: Action) {
         control.onEvent(sound.eventId, event, handler);
-        if (!sound) {
+        // if (!sound) 
+        {
+            basic.showNumber(sound.eventId);
             control.inBackground(() => {
                 while(true)
                 {
@@ -1008,7 +1012,9 @@ namespace mozi {
     //% blockId=mozi_temperature_create_event block="on temperature|%temperature|event|%event"
     export function onTemperature(temperature: Temperature, event: TEMP_EVENT_TYPE, handler: Action) {
         control.onEvent(temperature.eventId, event, handler);
-        if (!temperature) {
+        // if (!temperature) 
+        {
+            basic.showNumber(temperature.eventId);
             control.inBackground(() => {
                 while(true)
                 {
