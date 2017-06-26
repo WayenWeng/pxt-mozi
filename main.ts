@@ -183,7 +183,7 @@ namespace mozi {
          */
         //% blockId=mozi_get_button_event_status block="%strip|get button event status"
         //% advanced=true
-        getEventStatus(): BUTTON_EVENT_TYPE
+        getEventStatus(): number
         {
             let data: Buffer = pins.createBuffer(4);
             i2cSendByte(this.currentDeviceAddress, GROVE_TWO_DOUBLE_BUTTON_CMD_TYPE.I2C_CMD_GET_DEV_EVENT);
