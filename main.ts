@@ -644,7 +644,7 @@ namespace mozi {
                 {
                     const buttonStatus = button.getEventStatus();
                     if (buttonStatus == event) {                        
-                        control.raiseEvent(button.eventId, event);
+                        control.raiseEvent(8001, event);
                     }
                     basic.pause(50);
                 }
