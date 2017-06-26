@@ -591,6 +591,9 @@ namespace mozi {
     
     export class MoziInput extends Mozi
     {
+        lastStatus: number;
+        eventId: number;
+        
         /**
          * Get the device event status.
          */
@@ -607,8 +610,7 @@ namespace mozi {
     
     export class Button extends MoziInput
     {
-        lastStatus: number;
-        eventId: number;
+        
     }
     
     /**
@@ -643,7 +645,10 @@ namespace mozi {
                     const buttonStatus = button.getEventStatus();
                     if (buttonStatus != button.lastStatus) {
                         button.lastStatus = buttonStatus;
-                        basic.showNumber(button.lastStatus)
+                        basic.showString("A");
+                        basic.showNumber(buttonStatus);
+                        basic.showString("B");
+                        basic.showNumber(button.lastStatus);
                         control.raiseEvent(button.eventId, button.lastStatus);
                     }
                     basic.pause(50);
