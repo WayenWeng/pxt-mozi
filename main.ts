@@ -589,6 +589,7 @@ namespace mozi {
     
     let moziEventId = 8000;
     let addrBuffer: Buffer = pins.createBuffer(128);
+    let lastStatus: Buffer = pins.createBuffer(128);
     
     export class MoziInput extends Mozi
     {
@@ -640,7 +641,7 @@ namespace mozi {
      */
     //% blockId=mozi_button_create_event block="on button|%address|event|%event"
     //% address.min=2 address.max=126
-    export function onButton(address: number = 4, event: BUTTON_EVENT_TYPE, handler: Action) {
+    export function onButton(address: number = 2, event: BUTTON_EVENT_TYPE, handler: Action) {
         if(address < 128) { 
             let eventId = 0;
             if(addrBuffer[address] == 0)eventId = moziEventId + address;
@@ -649,9 +650,11 @@ namespace mozi {
             control.inBackground(() => {
                 while(true) {
                     const newStatus = getEventStatus(address);
-                    if (newStatus == event)
-                        control.raiseEvent(eventId, event);
-                    basic.pause(50);
+                    if (newStatus != lastStatus[address]) {
+                        lastStatus[address] = newStatus;
+                        control.raiseEvent(eventId, lastStatus[address]);
+                    }
+                    basic.pause(100);
                 }
             })
         }
@@ -740,7 +743,7 @@ namespace mozi {
      */
     //% blockId=mozi_imu_create_event block="on imu|%address|event|%event"
     //% address.min=2 address.max=126
-    export function onIMU(address: number = 2, event: IMU_EVENT_TYPE, handler: Action) {
+    export function onIMU(address: number = 4, event: IMU_EVENT_TYPE, handler: Action) {
         if(address < 128) { 
             let eventId = 0;
             if(addrBuffer[address] == 0)eventId = moziEventId + address;
@@ -749,9 +752,11 @@ namespace mozi {
             control.inBackground(() => {
                 while(true) {
                     const newStatus = getEventStatus(address);
-                    if (newStatus == event)
-                        control.raiseEvent(eventId, event);
-                    basic.pause(50);
+                    if (newStatus != lastStatus[address]) {
+                        lastStatus[address] = newStatus;
+                        control.raiseEvent(eventId, lastStatus[address]);
+                    }
+                    basic.pause(100);
                 }
             })
         }
@@ -829,15 +834,18 @@ namespace mozi {
     export function onLight(address: number = 5, event: LIGHT_EVENT_TYPE, handler: Action) {
         if(address < 128) {
             let eventId = 0;
+            lastStatus[address] = 0;
             if(addrBuffer[address] == 0)eventId = moziEventId + address;
             else eventId = addrBuffer[address];
             control.onEvent(eventId, event, handler);
             control.inBackground(() => {
                 while(true) {
                     const newStatus = getEventStatus(address);
-                    if (newStatus == event)
-                        control.raiseEvent(eventId, event);
-                    basic.pause(50);
+                    if (newStatus != lastStatus[address]) {
+                        lastStatus[address] = newStatus;
+                        control.raiseEvent(eventId, lastStatus[address]);
+                    }
+                    basic.pause(100);
                 }
             })
         }
@@ -915,15 +923,18 @@ namespace mozi {
     export function onSound(address: number = 6, event: SOUND_EVENT_TYPE, handler: Action) {
         if(address < 128) {
             let eventId = 0;
+            lastStatus[address] = 0;
             if(addrBuffer[address] == 0)eventId = moziEventId + address;
             else eventId = addrBuffer[address];
             control.onEvent(eventId, event, handler);
             control.inBackground(() => {
                 while(true) {
                     const newStatus = getEventStatus(address);
-                    if (newStatus == event)
-                        control.raiseEvent(eventId, event);
-                    basic.pause(50);
+                    if (newStatus != lastStatus[address]) {
+                        lastStatus[address] = newStatus;
+                        control.raiseEvent(eventId, lastStatus[address]);
+                    }
+                    basic.pause(100);
                 }
             })
         }
@@ -1001,15 +1012,18 @@ namespace mozi {
     export function onTemperature(address: number = 3, event: TEMP_EVENT_TYPE, handler: Action) {
         if(address < 128) {
             let eventId = 0;
+            lastStatus[address] = 0;
             if(addrBuffer[address] == 0)eventId = moziEventId + address;
             else eventId = addrBuffer[address];
             control.onEvent(eventId, event, handler);
             control.inBackground(() => {
                 while(true) {
                     const newStatus = getEventStatus(address);
-                    if (newStatus == event)
-                        control.raiseEvent(eventId, event);
-                    basic.pause(50);
+                    if (newStatus != lastStatus[address]) {
+                        lastStatus[address] = newStatus;
+                        control.raiseEvent(eventId, lastStatus[address]);
+                    }
+                    basic.pause(100);
                 }
             })
         }
