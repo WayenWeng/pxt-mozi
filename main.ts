@@ -643,15 +643,8 @@ namespace mozi {
                 while(true)
                 {
                     const buttonStatus = button.getEventStatus();
-                    if (buttonStatus != button.lastStatus) {
-                        
-                        basic.showString("A");
-                        basic.showNumber(buttonStatus); 
-                        basic.showString("B");
-                        basic.showNumber(button.lastStatus);
-                        
-                        button.lastStatus = buttonStatus;
-                        control.raiseEvent(button.eventId, button.lastStatus);
+                    if (buttonStatus == event) {                        
+                        control.raiseEvent(button.eventId, event);
                     }
                     basic.pause(50);
                 }
