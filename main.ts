@@ -594,6 +594,19 @@ namespace mozi {
         lastStatus: number;
         eventId: number;
         
+        getLastStatus(): number
+        {
+            return this.lastStatus;
+        }
+        setLastStatus(status: number)
+        {
+            this.lastStatus = status;
+        }
+        getEventId(): number
+        {
+            return this.eventId;
+        }
+        
         /**
          * Get the device event status.
          */
@@ -643,10 +656,9 @@ namespace mozi {
                 while(true)
                 {
                     const buttonStatus = button.getEventStatus();
-                    basic.showNumber(buttonStatus);
-                    if (buttonStatus != button.lastStatus) {                        
-                        // button.lastStatus = buttonStatus;
-                        // control.raiseEvent(button.eventId, button.lastStatus);
+                    if (buttonStatus != button.getLastStatus()) {                        
+                        button.setLastStatus(buttonStatus);
+                        control.raiseEvent(button.getEventId(), button.getLastStatus());
                     }
                     basic.pause(50);
                 }
