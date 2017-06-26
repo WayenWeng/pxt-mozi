@@ -638,7 +638,8 @@ namespace mozi {
     //% blockId=mozi_button_create_event block="on button|%button|event|%event"
     export function onButton(button: Button = undefined, event: BUTTON_EVENT_TYPE, handler: Action) {
         control.onEvent(button.eventId, event, handler);
-        if (button != undefined) {
+        // if (button != undefined) 
+        {
             control.inBackground(() => {
                 while(true)
                 {
