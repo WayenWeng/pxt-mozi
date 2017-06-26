@@ -825,7 +825,7 @@ namespace mozi {
      * @param event type of imu to detect
      * @param handler code to run
      */
-    //% blockId=mozi_imu_create_event block="on light|%light|event|%event"
+    //% blockId=mozi_light_create_event block="on light|%light|event|%event"
     export function onLight(light: Light, event: LIGHT_EVENT_TYPE, handler: Action) {
         control.onEvent(light.eventId, event, handler);
         if (!light) {
@@ -913,7 +913,7 @@ namespace mozi {
      * @param event type of sound to detect
      * @param handler code to run
      */
-    //% blockId=mozi_imu_create_event block="on sound|%sound|event|%event"
+    //% blockId=mozi_sound_create_event block="on sound|%sound|event|%event"
     export function onSound(sound: Sound, event: SOUND_EVENT_TYPE, handler: Action) {
         control.onEvent(sound.eventId, event, handler);
         if (!sound) {
@@ -1000,7 +1000,7 @@ namespace mozi {
      * @param event type of temperature to detect
      * @param handler code to run
      */
-    //% blockId=mozi_imu_create_event block="on temperature|%temperature|event|%event"
+    //% blockId=mozi_temperature_create_event block="on temperature|%temperature|event|%event"
     export function onTemperature(temperature: Temperature, event: TEMP_EVENT_TYPE, handler: Action) {
         control.onEvent(temperature.eventId, event, handler);
         if (!temperature) {
