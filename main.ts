@@ -644,11 +644,13 @@ namespace mozi {
                 {
                     const buttonStatus = button.getEventStatus();
                     if (buttonStatus != button.lastStatus) {
-                        button.lastStatus = buttonStatus;
+                        
                         basic.showString("A");
-                        basic.showNumber(buttonStatus);
+                        basic.showNumber(buttonStatus); 
                         basic.showString("B");
                         basic.showNumber(button.lastStatus);
+                        
+                        button.lastStatus = buttonStatus;
                         control.raiseEvent(button.eventId, button.lastStatus);
                     }
                     basic.pause(50);
@@ -658,10 +660,7 @@ namespace mozi {
     }
     
     export class IMU extends MoziInput
-    {
-        lastStatus: number;
-        eventId: number;
-        
+    {        
         private numberFormat(data: number): number
         {
             if(data > 0x7fff)data = 0 - ((data ^ 0xffff) + 1);
@@ -764,10 +763,7 @@ namespace mozi {
 
     
     export class Light extends MoziInput
-    {
-        lastStatus: number;
-        eventId: number;
-        
+    {        
         /**
          * Get the light sensor value.
          */
@@ -855,10 +851,7 @@ namespace mozi {
 
     
     export class Sound extends MoziInput
-    {
-        lastStatus: number;
-        eventId: number;
-        
+    {        
         /**
          * Get the sound sensor value.
          */
@@ -946,10 +939,7 @@ namespace mozi {
 
     
     export class Temperature extends MoziInput
-    {
-        lastStatus: number;
-        eventId: number;
-        
+    {       
         /**
          * Get the temperature value.
          */
